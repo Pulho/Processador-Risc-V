@@ -39,18 +39,18 @@ logic [4:0] Crcbne = 5'b01011;
 logic [4:0] Lui = 5'b01100;
 logic [4:0] Exeand = 5'b01101;
 logic [4:0] Exeslt = 5'b01110;
-logic [4:0] Cslt = 5'b01111;
 
 
 logic [3:0] state; 
 logic [3:0] nextState;
+
+assign stateout = state;
 
 always_ff@(posedge clk, posedge reset) begin
 	if(reset)begin
 		state <= inicio;
 	end else begin 
 		state <= nextState;
-		stateout <= state;
 	end
 end
 
@@ -453,32 +453,12 @@ always_comb begin
 		Exeslt: begin
 			Wrl = 1'b0;
 			WrD = 1'b0;
-			RegWrite = 1'b0;
-			LoadIR = 1'b0;
-			MemToReg = 2'b00;
-			ALUSrcA = 2'b01;
-			ALUSrcB = 2'b00;
-			ALUFct = 3'b111;
-			PCWrite = 1'b0;
-			PCWriteCondbeq = 1'b0;
-			PCWriteCondbne = 1'b0;
-			PCSource = 1'b0;
-			LoadRegA = 1'b0;
-			LoadRegB = 1'b0;
-			LoadAOut = 1'b0;
-			LoadMDR = 1'b0;
-			nextState = Cslt;
-		end
-
-		Cslt: begin
-			Wrl = 1'b0;
-			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
 			MemToReg = 2'b10;
-			ALUSrcA = 2'b00;
+			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
-			ALUFct = 3'b000;
+			ALUFct = 3'b111;
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
