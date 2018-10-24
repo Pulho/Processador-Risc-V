@@ -1,0 +1,116 @@
+C:/Users/maxn/Desktop/teste/modulos/principal.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/principal.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module principal
+
+Top level modules:
+	principal
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/mux.sv {1 {vlog -work work -sv -stats=none {C:\Users\maxn\Desktop\teste\modulos\mux.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module mux
+
+Top level modules:
+	mux
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/regInst.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/regInst.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module regInst
+
+Top level modules:
+	regInst
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/ula64.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/maxn/Desktop/teste/modulos/ula64.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Compiling entity Ula64
+-- Compiling architecture behavioral of Ula64
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/deslocamento.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/deslocamento.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Deslocamento
+
+Top level modules:
+	Deslocamento
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/Memoria32.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/Memoria32.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Memoria32
+
+Top level modules:
+	Memoria32
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/UnidadeControle.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/UnidadeControle.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module UnidadeControle
+
+Top level modules:
+	UnidadeControle
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/ramOnChip64.v {1 {vlog -work work -stats=none C:/Users/maxn/Desktop/teste/modulos/ramOnChip64.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ramOnChip64
+
+Top level modules:
+	ramOnChip64
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/Instr_Reg_RISC_V.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/maxn/Desktop/teste/modulos/Instr_Reg_RISC_V.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity Instr_Reg_RISC_V
+-- Compiling architecture behavioral_arch of Instr_Reg_RISC_V
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/mux_single.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/mux_single.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module mux_single
+
+Top level modules:
+	mux_single
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/ramOnChip32.v {1 {vlog -work work -stats=none C:/Users/maxn/Desktop/teste/modulos/ramOnChip32.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ramOnChip
+
+Top level modules:
+	ramOnChip
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/Memoria64.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/Memoria64.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Memoria64
+
+Top level modules:
+	Memoria64
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/Extend_signal.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/Extend_signal.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Extend_signal
+
+Top level modules:
+	Extend_signal
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/register.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/register.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module register
+
+Top level modules:
+	register
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/simulacao.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/simulacao.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module simulacao
+
+Top level modules:
+	simulacao
+
+} {} {}} C:/Users/maxn/Desktop/teste/modulos/bancoReg.sv {1 {vlog -work work -sv -stats=none C:/Users/maxn/Desktop/teste/modulos/bancoReg.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module bancoReg
+
+Top level modules:
+	bancoReg
+
+} {} {}}

@@ -1,0 +1,63 @@
+module Extend_Signal( input logic [31:0] in, output logic [63:0] out );
+logic [1:0] op;
+logic [11:0] aux;
+logic [19:0] aux2;
+logic [31:0] auxout;
+logic [31:0] auxout2;
+
+always begin
+	
+	if(in[6:0] == 7'b0010011 || in[6:0] == 7'b0000011) begin
+		aux[11:0] = in[31:20];
+		op = 2'b00;
+	end
+	else if(in[6:0] == 7'b0100011) begin
+		aux[11:5] = in[31:25];
+		aux[4:0] = in[12:7];
+		op = 2'b00;
+	end
+	else if(in[6:0] == 7'b1100111) begin
+		aux[3:0] = in[11:8];
+		aux[9:4] = in[30:25];
+		aux[10] = in[7];
+		aux[11] = in[31];	
+		op = 2'b01;
+	end
+	else if(in[6:0] == 7'b0110111) begin
+		aux2 = in[31:12];
+		op = 2'b10;
+	end
+
+	if(op == 2'b00) begin
+		if(aux[11] == 1'b0) begin
+			auxout = (32'b00000000000000000000000000000000 + aux);
+		end
+		else if(aux[11] == 1'b1) begin
+			auxout = (32'b11111111111111111111000000000000 + aux);
+		end
+	end
+	else if(op == 2'b01) begin
+		if(aux[11] == 1'b0) begin
+			auxout2 = (32'b00000000000000000000000000000000 + aux);
+		end
+		else if(aux[11] == 1'b1) begin
+			auxout2 = (32'b11111111111111111111000000000000 + aux);
+		end
+		auxout = auxout2 << 1;
+	end
+	else if(op == 2'b10) begin
+		if(aux2[19] == 1'b0) begin
+			auxout = (32'b00000000000000000000000000000000 + aux2);
+		end
+		else if(aux2[19] == 1'b1) begin
+			auxout = (32'b11111111111100000000000000000000 + aux2);
+		end
+	end
+	
+	if(in[31] == 1'b0) begin
+		out = (64'b0000000000000000000000000000000000000000000000000000000000000000 + auxout);
+	end else if(in[31] == 1'b1) begin
+		out = (64'b1111111111111111111111111111111100000000000000000000000000000000 + auxout);
+	end
+end
+endmodule: Extend_Signal

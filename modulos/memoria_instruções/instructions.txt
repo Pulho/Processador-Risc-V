@@ -1,0 +1,5 @@
+addi x19,x0,2
+sd x19,0(x3)
+ld x20,0(x3)
+addi x20,x20,3
+add x21,x19,x20

@@ -1,0 +1,35 @@
+`timescale 1ps/1ps
+
+module simulacao;
+    localparam CLKPERIOD = 1000;
+    localparam CLKDELAY = CLKPERIOD / 2;
+
+    logic clk;
+    logic rst;
+    logic [3:0] Out;
+    logic [3:0] cont;
+
+    principal test (
+        .clk(clk), 
+        .reset(rst),       
+        .stateOut(Out)
+    ); 
+
+    initial begin 
+        rst = 1'b0;
+        #(CLKPERIOD)
+        rst = 1'b1;
+        #(CLKPERIOD)
+        #(CLKPERIOD)
+        rst = 1'b0; 
+        for( cont = 0; cont != 4'b1111; cont++ ) #(CLKDELAY) clk = ~clk;
+        #(CLKDELAY) $finish;
+    end
+
+    initial begin
+        $monitor($time,"stateOut - %b, cont - %b, reset - %b, clk - %b", Out, cont, rst, clk);
+    end
+
+endmodule: simulacao
+
+ 
