@@ -244,7 +244,7 @@ always_comb begin
 
 			else if(OPcode == 7'b0010011) begin
 				if(func3 == 3'b000) begin
-					nextState = Exeaddi;
+					nextState = Cr;
 				end
 				else nextState = inicio;
 			end
@@ -308,26 +308,6 @@ always_comb begin
 			LoadAOut = 1'b1;
 			LoadMDR = 1'b0;
 			nextState = inicio;
-		end
-
-		Exeaddi: begin
-			Wrl = 1'b0;
-			WrD = 1'b0;
-			RegWrite = 1'b0;
-			LoadIR = 1'b0;
-			MemToReg = 2'b00;
-			ALUSrcA = 2'b01;
-			ALUSrcB = 2'b10;
-			ALUFct = 3'b001;
-			PCWrite = 1'b0;
-			PCWriteCondbeq = 1'b0;
-			PCWriteCondbne = 1'b0;
-			PCSource = 1'b0;
-			LoadRegA = 1'b0;
-			LoadRegB = 1'b0;
-			LoadAOut = 1'b1;
-			LoadMDR = 1'b0;
-			nextState = Cr;
 		end
 
 		Exeadd: begin
