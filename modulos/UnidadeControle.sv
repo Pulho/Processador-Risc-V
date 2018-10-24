@@ -31,16 +31,15 @@ logic [4:0] Cem = 5'b00011;
 logic [4:0] Amld = 5'b00100;
 logic [4:0] Ev = 5'b00101;
 logic [4:0] Amsd = 5'b00110;
-logic [4:0] Exeaddi = 5'b00111;
-logic [4:0] Exeadd = 5'b01000;
-logic [4:0] Exesub = 5'b01001;
-logic [4:0] Cr = 5'b01010;
-logic [4:0] Crcbeq = 5'b01011;
-logic [4:0] Crcbne = 5'b01100;
-logic [4:0] Lui = 5'b01101;
-logic [4:0] Exeand = 5'b01110;
-logic [4:0] Exeslt = 5'b01111;
-logic [4:0] Cslt = 5'b10000;
+logic [4:0] Exeadd = 5'b00111;
+logic [4:0] Exesub = 5'b01000;
+logic [4:0] Cr = 5'b01001;
+logic [4:0] Crcbeq = 5'b01010;
+logic [4:0] Crcbne = 5'b01011;
+logic [4:0] Lui = 5'b01100;
+logic [4:0] Exeand = 5'b01101;
+logic [4:0] Exeslt = 5'b01110;
+logic [4:0] Cslt = 5'b01111;
 
 logic [3:0] state; 
 logic [3:0] nextState;
@@ -244,7 +243,7 @@ always_comb begin
 
 			else if(OPcode == 7'b0010011) begin
 				if(func3 == 3'b000) begin
-					nextState = Exeaddi;
+					nextState = Cr;
 				end
 				else nextState = inicio;
 			end
@@ -308,26 +307,6 @@ always_comb begin
 			LoadAOut = 1'b1;
 			LoadMDR = 1'b0;
 			nextState = inicio;
-		end
-
-		Exeaddi: begin
-			Wrl = 1'b0;
-			WrD = 1'b0;
-			RegWrite = 1'b0;
-			LoadIR = 1'b0;
-			MemToReg = 2'b00;
-			ALUSrcA = 2'b01;
-			ALUSrcB = 2'b10;
-			ALUFct = 3'b001;
-			PCWrite = 1'b0;
-			PCWriteCondbeq = 1'b0;
-			PCWriteCondbne = 1'b0;
-			PCSource = 1'b0;
-			LoadRegA = 1'b0;
-			LoadRegB = 1'b0;
-			LoadAOut = 1'b1;
-			LoadMDR = 1'b0;
-			nextState = Cr;
 		end
 
 		Exeadd: begin
