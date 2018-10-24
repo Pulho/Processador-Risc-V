@@ -41,6 +41,7 @@ logic [4:0] Exeand = 5'b01101;
 logic [4:0] Exeslt = 5'b01110;
 logic [4:0] Cslt = 5'b01111;
 
+
 logic [3:0] state; 
 logic [3:0] nextState;
 
