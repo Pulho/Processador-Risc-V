@@ -5,7 +5,7 @@ module UnidadeControle(
 	input logic [6:0] func7,
 	input logic [2:0] func3,
 
-	output logic [3:0] stateout,
+	output logic [4:0] stateout,
 	output logic Wrl,
 	output logic WrD,
 	output logic RegWrite,
@@ -24,20 +24,23 @@ module UnidadeControle(
 	output logic LoadMDR
 );
 
-logic [3:0] inicio = 4'b0000;
-logic [3:0] BInst = 4'b0001;
-logic [3:0] IDecod = 4'b0010; 
-logic [3:0] Cem = 4'b0011;
-logic [3:0] Amld = 4'b0100;
-logic [3:0] Ev = 4'b0101;
-logic [3:0] Amsd = 4'b0110;
-logic [3:0] Exeaddi = 4'b0111;
-logic [3:0] Exeadd = 4'b1000;
-logic [3:0] Exesub = 4'b1001;
-logic [3:0] Cr = 4'b1010;
-logic [3:0] Crcbeq = 4'b1011;
-logic [3:0] Crcbne = 4'b1100;
-logic [3:0] Lui = 4'b1101;
+logic [4:0] inicio = 5'b00000;
+logic [4:0] BInst = 5'b00001;
+logic [4:0] IDecod = 5'b00010; 
+logic [4:0] Cem = 5'b00011;
+logic [4:0] Amld = 5'b00100;
+logic [4:0] Ev = 5'b00101;
+logic [4:0] Amsd = 5'b00110;
+logic [4:0] Exeaddi = 5'b00111;
+logic [4:0] Exeadd = 5'b01000;
+logic [4:0] Exesub = 5'b01001;
+logic [4:0] Cr = 5'b01010;
+logic [4:0] Crcbeq = 5'b01011;
+logic [4:0] Crcbne = 5'b01100;
+logic [4:0] Lui = 5'b01101;
+logic [4:0] Exeand = 5'b01110;
+logic [4:0] Exeslt = 5'b01111;
+logic [4:0] Cslt = 5'b10000;
 
 logic [3:0] state; 
 logic [3:0] nextState;
@@ -112,14 +115,28 @@ always_comb begin
 			LoadMDR = 1'b0;
 
 			case(OPcode)
+
 				7'b0110011: begin //Tipo R
 					case(func7)
+
 						7'b0000000: begin
-							nextState = Exeadd;
+							case(func3)
+								3'b000: begin
+									nextState = Exeadd;
+								end
+								3'b010: begin
+									nextState = Exeslt;
+								end
+								3'b111: begin
+									nextState = Exeand;
+								end
+							endcase
 						end
+
 						7'b0100000: begin
 							nextState = Exesub;
 						end
+
 						default: begin
 							nextState = inicio;
 						end
@@ -414,6 +431,66 @@ always_comb begin
 		end
 
 		Lui: begin
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b1;
+			LoadIR = 1'b0;
+			MemToReg = 2'b10;
+			ALUSrcA = 2'b00;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b000;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b0;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		Exeand: begin
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b0;
+			LoadIR = 1'b0;
+			MemToReg = 2'b00;
+			ALUSrcA = 2'b01;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b011;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b1;
+			LoadMDR = 1'b0;
+			nextState = Cr;
+		end
+
+		Exeslt: begin
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b0;
+			LoadIR = 1'b0;
+			MemToReg = 2'b00;
+			ALUSrcA = 2'b01;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b111;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b0;
+			LoadMDR = 1'b0;
+			nextState = Cslt;
+		end
+
+		Cslt: begin
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b1;
