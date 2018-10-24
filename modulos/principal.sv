@@ -1,10 +1,8 @@
 module principal(
 	input logic clk,
 	input logic reset,
-	output logic [3:0] stateOut,
-	output logic [63:0] fio_MemData_RegMemData,
-	output logic [63:0] fio_RegMemData_Mux,
-	output logic [63:0] fio_B_MuxB,
+	output logic [4:0] stateOut,
+	output logic [63:0] fio_Extend_shift,
 	output logic [63:0] fio_muxWD_regBank
 );
 	
@@ -24,20 +22,20 @@ module principal(
 	logic [1:0] fio_UC_MuxA;
 	logic [1:0] fio_UC_MuxB;
 	logic [2:0] fio_UC_ALU;
-	//logic [63:0] fio_RegMemData_Mux;
+	logic [63:0] fio_RegMemData_Mux;
 	logic [63:0] fio_MuxALUOut_PC;
-	// logic [63:0] fio_MemData_RegMemData;
+	logic [63:0] fio_MemData_RegMemData;
 	logic [63:0] fio_RegBank_A;
 	logic [63:0] fio_RegBank_B;
 	logic [63:0] fio_A_MuxA;
-	// logic [63:0] fio_B_MuxB;
+	logic [63:0] fio_B_MuxB;
 	logic [63:0] fio_ALU_ALUOut;
 	logic [63:0] fio_PC_memInst;
-	// logic [63:0] fio_muxWD_regBank;
+	//logic [63:0] fio_muxWD_regBank;
 	logic [63:0] fio_ALUOut_MuxALUOut;
 	logic [63:0] fio_MuxA_ALU;
 	logic [63:0] fio_MuxB_ALU;
-	logic [63:0] fio_Extend_shift;
+	//logic [63:0] fio_Extend_shift;
 	logic [63:0] fio_Shift_MuxB;
 	logic [1:0] fio_memToReg_muxWD;
 	logic [31:0] fio_memInst_regInst;
@@ -46,6 +44,7 @@ module principal(
 	logic [4:0] fio_regInst2420_reg2;
 	logic [4:0] fio_regInst117_WriteReg;
 	logic LoadPC;
+	logic fio_menor_ExtendS;
 
 	register PC(
 		.clk(clk),
@@ -169,7 +168,12 @@ module principal(
 		.B(fio_MuxB_ALU),
 		.Seletor(fio_UC_ALU),
 		.S(fio_ALU_ALUOut),	
-		.z(fio_zero)
+		.Overflow(),
+		.Negativo(),
+		.z(fio_zero),
+		.Igual(),
+		.Maior(),
+		.Menor(fio_menor_ExtendS)
 	);
 
 	mux_single mux_ALUOut(
@@ -180,6 +184,7 @@ module principal(
 	);
 
 	Extend_signal extensor_sinal(
+		.menorSinal(fio_menor_ExtendS),
 		.in(fio_regInst_UC),
 		.out(fio_Extend_shift)
 	);
