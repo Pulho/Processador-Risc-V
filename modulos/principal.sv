@@ -3,18 +3,15 @@ module principal(
 	input logic reset,
 	output logic [4:0] stateOut,
 	output logic [63:0] fio_muxWD_regBank,
-	output logic fio_menor_ExtendS,
 	output logic [63:0] fio_MuxA_ALU,
 	output logic [63:0] fio_MuxB_ALU,
 	output logic [63:0] fio_ALU_ALUOut,
-	output logic [63:0] fio_ALUOut_MuxALUOut,
-	output logic [63:0] fio_Shift_MuxB,
-	output logic fio_UC_RegBank
+	output logic [63:0] fio_ALUOut_MuxALUOut
 );
 	
 	logic fio_UC_memInst;
 	logic fio_UC_RegInst;
-	//logic fio_UC_RegBank;
+	logic fio_UC_RegBank;
 	logic fio_UC_LDA;
 	logic fio_UC_LDB;
 	logic fio_UC_ALUOut;
@@ -41,8 +38,8 @@ module principal(
 	//logic [63:0] fio_ALUOut_MuxALUOut;
 	//logic [63:0] fio_MuxA_ALU;
 	//logic [63:0] fio_MuxB_ALU;
-	//logic [63:0] fio_Extend_shift;
-	//logic [63:0] fio_Shift_MuxB;
+	logic [63:0] fio_Extend_shift;
+	logic [63:0] fio_Shift_MuxB;
 	logic [1:0] fio_memToReg_muxWD;
 	logic [31:0] fio_memInst_regInst;
 	logic [31:0] fio_regInst_UC;
