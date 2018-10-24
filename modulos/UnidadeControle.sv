@@ -31,16 +31,16 @@ logic [4:0] Cem = 5'b00011;
 logic [4:0] Amld = 5'b00100;
 logic [4:0] Ev = 5'b00101;
 logic [4:0] Amsd = 5'b00110;
-// Adicionar algum
-logic [4:0] Exeadd = 5'b01000;
-logic [4:0] Exesub = 5'b01001;
-logic [4:0] Cr = 5'b01010;
-logic [4:0] Crcbeq = 5'b01011;
-logic [4:0] Crcbne = 5'b01100;
-logic [4:0] Lui = 5'b01101;
-logic [4:0] Exeand = 5'b01110;
-logic [4:0] Exeslt = 5'b01111;
-logic [4:0] Cslt = 5'b10000;
+logic [4:0] Exeadd = 5'b00111;
+logic [4:0] Exesub = 5'b01000;
+logic [4:0] Cr = 5'b01001;
+logic [4:0] Crcbeq = 5'b01010;
+logic [4:0] Crcbne = 5'b01011;
+logic [4:0] Lui = 5'b01100;
+logic [4:0] Exeand = 5'b01101;
+logic [4:0] Exeslt = 5'b01110;
+logic [4:0] Cslt = 5'b01111;
+
 
 logic [3:0] state; 
 logic [3:0] nextState;

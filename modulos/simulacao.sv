@@ -6,21 +6,23 @@ module simulacao;
 
     logic clk;
     logic rst;
-    logic [3:0] Out;
+    logic [4:0] Out;
     logic [5:0] cont;
-    logic [63:0] Regs;
-    logic [63:0] MemReg;
-    logic [63:0] inMem;
-    logic [63:0] inregBank;
+    logic [63:0] immd;
+    logic [63:0] inB;
+    logic sg;
+    logic [63:0] regA;
+    logic [63:0] regB;
 
     principal test (
         .clk(clk), 
         .reset(rst),       
         .stateOut(Out),
-        .fio_MemData_RegMemData(MemReg),
-        .fio_RegMemData_Mux(Regs),
-        .fio_B_MuxB(inMem),
-        .fio_muxWD_regBank(inregBank)
+        .fio_Extend_shift(immd),
+        .fio_muxWD_regBank(inB),
+        .fio_menor_ExtendS(sg),
+        .fio_MuxA_ALU(regA),
+        .fio_MuxB_ALU(regB)
     ); 
 
     initial begin 
@@ -39,12 +41,12 @@ module simulacao;
             cont<= 0;
         end else begin
             if( cont == 6'b111111 ) $finish;
-            else cont <= cont + 4'b0001;
+            else cont <= cont + 6'b000001;
         end 
     end
     
     initial begin
         clk = 1'b1;
-        $monitor($time,"stateOut - %b | cont - %b | reset - %b | clk - %b| MemReg - %b -> %b | Reg -  %b | inBank - %b", Out, cont, rst, clk, inMem, MemReg, Regs, inregBank);
+        $monitor($time,"stateOut - %b | cont - %b | reset - %b | immd - %b | inB - %b | sg-%b \n\t\t\t regA - %b | regB - %b", Out, cont, rst, immd, inB, sg, regA, regB);
     end
 endmodule: simulacao
