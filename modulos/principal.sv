@@ -2,7 +2,6 @@ module principal(
 	input logic clk,
 	input logic reset,
 	output logic [4:0] stateOut,
-	output logic [63:0] fio_Extend_shift,
 	output logic [63:0] fio_muxWD_regBank,
 	output logic fio_menor_ExtendS,
 	output logic [63:0] fio_MuxA_ALU,
@@ -51,7 +50,7 @@ module principal(
 	logic [4:0] fio_regInst2420_reg2;
 	logic [4:0] fio_regInst117_WriteReg;
 	logic LoadPC;
-	//logic fio_menor_ExtendS;
+	logic fio_menor_ExtendS;
 
 	register PC(
 		.clk(clk),

@@ -1,0 +1,9 @@
+addi x9,x0,32
+addi x10,x0,4
+bge x10,x9,4
+sub x10,x0,x0
+add x10,x10,x9
+and x7,x10,x9
+add x0,x0,x0
+add x0,x0,x0
+addi x8,x8,30

@@ -1,9 +1,3 @@
-def reverse(s): 
-	str = "" 
-	for i in s: 
-		str = i + str
-	return str
-
 arq = open('instructions.txt', 'r')
 arq2 = open('instructions.mif', 'w')
 
@@ -89,8 +83,8 @@ for x in arrayInst:
 		rd = int(inst[1].split(",")[0].split("x")[1])
 		imm= int(inst[1].split(",")[2])
 
-		decod+='0000000'
-		decod+=get_bin(imm,5)
+		decod+='000000'
+		decod+=get_bin(imm,6)
 		decod+=get_bin(rs1,5)
 		decod+='101'
 		decod+=get_bin(rd,5)
@@ -101,8 +95,8 @@ for x in arrayInst:
 		rd = int(inst[1].split(",")[0].split("x")[1])
 		imm= int(inst[1].split(",")[2])
 
-		decod+='0100000'
-		decod+=get_bin(imm,5)
+		decod+='010000'
+		decod+=get_bin(imm,6)
 		decod+=get_bin(rs1,5)
 		decod+='101'
 		decod+=get_bin(rd,5)
@@ -113,8 +107,8 @@ for x in arrayInst:
 		rd = int(inst[1].split(",")[0].split("x")[1])
 		imm= int(inst[1].split(",")[2])
 
-		decod+='0000000'
-		decod+=get_bin(imm,5)
+		decod+='000000'
+		decod+=get_bin(imm,6)
 		decod+=get_bin(rs1,5)
 		decod+='001'
 		decod+=get_bin(rd,5)
@@ -247,7 +241,7 @@ for x in arrayInst:
 		decod+=imm1
 		decod+=get_bin(rs2,5)
 		decod+=get_bin(rs1,5)
-		decod+='000'
+		decod+='001'
 		decod+=imm2
 		decod+='0100011'
 
@@ -263,7 +257,7 @@ for x in arrayInst:
 		decod+=imm1
 		decod+=get_bin(rs2,5)
 		decod+=get_bin(rs1,5)
-		decod+='010'
+		decod+='000'
 		decod+=imm2
 		decod+='0100011'
 
@@ -308,8 +302,8 @@ for x in arrayInst:
 		imm= int(inst[1].split(",")[2])
 
 		imm1 = get_bin(imm,12)[0]
-		imm2 = get_bin(imm,12)[2:7]
-		imm3 = get_bin(imm,12)[7:12]
+		imm2 = get_bin(imm,12)[2:8]
+		imm3 = get_bin(imm,12)[8:12]
 		imm4 = get_bin(imm,12)[1]
 
 		decod+=imm1+imm2
@@ -317,7 +311,7 @@ for x in arrayInst:
 		decod+=get_bin(rs1,5)
 		decod+='100'
 		decod+=imm3+imm4
-		decod+='1100011'
+		decod+='1100111'
 
 	if(inst[0] == "bge"):
 		rs2= int(inst[1].split(",")[1].split("x")[1])
@@ -325,8 +319,8 @@ for x in arrayInst:
 		imm= int(inst[1].split(",")[2])
 
 		imm1 = get_bin(imm,12)[0]
-		imm2 = get_bin(imm,12)[2:7]
-		imm3 = get_bin(imm,12)[7:12]
+		imm2 = get_bin(imm,12)[2:8]
+		imm3 = get_bin(imm,12)[8:12]
 		imm4 = get_bin(imm,12)[1]
 
 		decod+=imm1+imm2
@@ -334,7 +328,7 @@ for x in arrayInst:
 		decod+=get_bin(rs1,5)
 		decod+='101'
 		decod+=imm3+imm4
-		decod+='1100011'
+		decod+='1100111'
 
 	#UJ-Type
 
@@ -343,9 +337,10 @@ for x in arrayInst:
 		imm= int(inst[1].split(",")[1])
 
 		imm1 = get_bin(imm,20)[0]
-		imm2 = get_bin(imm,20)[1:8]
-		imm3 = get_bin(imm,20)[9]
-		imm4 = get_bin(imm,20)[9:20]
+		imm2 = get_bin(imm,20)[1:9]
+		imm3 = get_bin(imm,20)[10]
+		imm4 = get_bin(imm,20)[10:20]
+
 
 		decod+=imm1+imm4+imm3+imm2
 		decod+=get_bin(rd,5)
@@ -361,42 +356,21 @@ for x in arrayInst:
 		decod+=get_bin(rd,5)
 		decod+='0110111'
 
+
 	if(len(x)>0):
-		#TESTEZONE
-
-		string2 = ''
-		string = ''
-		for a in range(8):
-			string += decod[7-a]
-		string2 = string
-		string = ''
-		for a in range(8):
-			string += decod[15-a]
-		string2 += string
-		string = ''
-		for a in range(8):
-			string += decod[23-a]
-		string2 += string
-		string = ''
-		for a in range(8):
-			string += decod[31-a]
-		string2 += string
-
-		decod = string2
-
-		#TESTEZONE
-
-		n=31
-		count+=1
 		toWrite.append("\n--" + x+ '\n')
-		for y in range(32):
-			if(y%8==0):
-				toWrite.append('\n'+numberLine + ": ")
-				numberLine =  str(int(numberLine)+1).zfill(3)
-			toWrite.append(decod[n])
-			if(y%8==7):
-				toWrite.append(';')
-			n=n-1
+		for y in range(4):
+			toWrite.append('\n'+numberLine + ": ")
+			numberLine =  str(int(numberLine)+1).zfill(3)
+			if(y%4==3):
+				toWrite.append(decod[:8])
+			if(y%4==2):
+				toWrite.append(decod[8:16])
+			if(y%4==1):
+				toWrite.append(decod[16:24])
+			if(y%4==0):
+				toWrite.append(decod[24:32])	
+			toWrite.append(';')
 		toWrite.append("\n")
 
 
