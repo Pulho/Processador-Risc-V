@@ -8,21 +8,20 @@ module simulacao;
     logic rst;
     logic [4:0] Out;
     logic [5:0] cont;
-    logic [63:0] immd;
-    logic [63:0] inB;
+    logic [63:0] write;
+    logic [63:0] aAlu;
+    logic [63:0] bAlu;
+    logic [63:0] sAlu;
     logic sg;
-    logic [63:0] regA;
-    logic [63:0] regB;
 
     principal test (
         .clk(clk), 
         .reset(rst),       
         .stateOut(Out),
-        .fio_Extend_shift(immd),
-        .fio_muxWD_regBank(inB),
-        .fio_menor_ExtendS(sg),
-        .fio_MuxA_ALU(regA),
-        .fio_MuxB_ALU(regB)
+        .fio_muxWD_regBank(write),
+        .fio_MuxA_ALU(aAlu),
+        .fio_MuxB_ALU(bAlu),
+        .fio_ALU_ALUOut(sAlu)
     ); 
 
     initial begin 
@@ -47,6 +46,6 @@ module simulacao;
     
     initial begin
         clk = 1'b1;
-        $monitor($time,"stateOut - %b | cont - %b | reset - %b | immd - %b | inB - %b | sg-%b \n\t\t\t regA - %b | regB - %b", Out, cont, rst, immd, inB, sg, regA, regB);
+        $monitor($time,"stateOut - %b | regBank - %b | aAlu - %b | bAlu - %b | sAlu - %b ", Out, write, aAlu, bAlu, sAlu);
     end
 endmodule: simulacao

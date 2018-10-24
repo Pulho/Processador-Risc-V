@@ -24,30 +24,19 @@ for z in range(64):
 			#print decod
 			
 			if(int(inst[0])==z):
-				toWrite.append("\n--" + x+ '\n')
-				for y in range(8):
-					toWrite.append('\n'+numberLine + ": ")
-					numberLine =  str(int(numberLine)+1).zfill(3)
-					if(y%8==7):
-						toWrite.append(decod[:8])
-					if(y%8==6):
-						toWrite.append(decod[8:16])
-					if(y%8==5):
-						toWrite.append(decod[16:24])
-					if(y%8==4):
-						toWrite.append(decod[24:32])
-					if(y%8==3):
-						toWrite.append(decod[32:40])
-					if(y%8==2):
-						toWrite.append(decod[40:48])
-					if(y%8==1):
-						toWrite.append(decod[48:56])
+				n=63
+				count = 1
+				toWrite.append("\n--" + x + '\n')
+				numberLine = str(z*8).zfill(3)
+				for y in range(64):
 					if(y%8==0):
-						toWrite.append(decod[56:64])					
-					toWrite.append(';')
-			toWrite.append("\n")
-
-
+						toWrite.append('\n'+numberLine + ": ")
+						numberLine =  str(int(numberLine)+1).zfill(3)
+					toWrite.append(decod[n])
+					n=n-1
+					if(y%8==7):
+						toWrite.append(';')
+				toWrite.append("\n")
 	if(count==0):
 		n=63
 		numberLine = str(z*8).zfill(3)

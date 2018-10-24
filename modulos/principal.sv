@@ -2,11 +2,10 @@ module principal(
 	input logic clk,
 	input logic reset,
 	output logic [4:0] stateOut,
-	output logic [63:0] fio_Extend_shift,
 	output logic [63:0] fio_muxWD_regBank,
-	output logic fio_menor_ExtendS,
-	logic [63:0] fio_MuxA_ALU,
-	logic [63:0] fio_MuxB_ALU
+	output logic[63:0] fio_MuxA_ALU,
+	output logic [63:0] fio_MuxB_ALU,
+	output logic [63:0] fio_ALU_ALUOut
 );
 	
 	logic fio_UC_memInst;
@@ -32,13 +31,13 @@ module principal(
 	logic [63:0] fio_RegBank_B;
 	logic [63:0] fio_A_MuxA;
 	logic [63:0] fio_B_MuxB;
-	logic [63:0] fio_ALU_ALUOut;
+	//logic [63:0] fio_ALU_ALUOut;
 	logic [63:0] fio_PC_memInst;
 	//logic [63:0] fio_muxWD_regBank;
 	logic [63:0] fio_ALUOut_MuxALUOut;
 	//logic [63:0] fio_MuxA_ALU;
 	//logic [63:0] fio_MuxB_ALU;
-	//logic [63:0] fio_Extend_shift;
+	logic [63:0] fio_Extend_shift;
 	logic [63:0] fio_Shift_MuxB;
 	logic [1:0] fio_memToReg_muxWD;
 	logic [31:0] fio_memInst_regInst;
@@ -47,7 +46,7 @@ module principal(
 	logic [4:0] fio_regInst2420_reg2;
 	logic [4:0] fio_regInst117_WriteReg;
 	logic LoadPC;
-	//logic fio_menor_ExtendS;
+	logic fio_menor_ExtendS;
 
 	register PC(
 		.clk(clk),
