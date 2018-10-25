@@ -6,6 +6,7 @@ module UnidadeControle(
 	input logic [2:0] func3,
 
 	output logic [4:0] stateout,
+	output logic [1:0] Shift,
 	output logic Wrl,
 	output logic WrD,
 	output logic RegWrite,
@@ -43,10 +44,15 @@ logic [4:0] Exeand = 5'b01101;
 logic [4:0] Exeslt = 5'b01110;
 logic [4:0] Crcbge = 5'b01111;
 logic [4:0] Crcblt = 5'b10000;
+logic [4:0] Srli = 5'b10001;
+logic [4:0] Srai = 5'b10010;
+logic [4:0] Slli = 5'b10011;
+logic [4:0] Break = 5'b10100;
+logic [4:0] Exeslti = 5'b10101;
 
 
-logic [3:0] state; 
-logic [3:0] nextState;
+logic [4:0] state; 
+logic [4:0] nextState;
 
 assign stateout = state;
 
@@ -61,6 +67,7 @@ end
 always_comb begin
 	case(state)
 		inicio: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -83,6 +90,7 @@ always_comb begin
 		end
 		
 		BInst: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -105,6 +113,7 @@ always_comb begin
 		end
 
 		IDecod: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -158,6 +167,21 @@ always_comb begin
 						3'b000: begin
 							nextState = Cem;
 						end
+						3'b101: begin
+							if(func7[5] == 1'b0) begin // Srli
+								nextState = Srli;
+							end 
+							else begin // Srai
+								nextState = Srai;
+							end 
+						end
+						3'b001: begin // Slli
+							nextState = Slli;
+						end
+
+						3'b010: begin //slti
+							nextState = Exeslti;
+						end
 						default: begin
 							nextState = inicio;
 						end
@@ -190,10 +214,16 @@ always_comb begin
 					endcase
 				end
 
-				7'b1100111: begin //bne
+				7'b1100111: begin //bne && bge && blt
 					case(func3)
-						3'b001: begin
+						3'b001: begin // bne
 							nextState = Crcbne;
+						end
+						3'b101: begin // bge
+							nextState = Crcbge;
+						end
+						3'b100: begin // blt
+							nextState = Crcblt;
 						end
 						default: begin
 							nextState = inicio;
@@ -205,6 +235,10 @@ always_comb begin
 					nextState = Lui;
 				end
 
+				7'b1110011: begin //break
+					nextState = Break;
+				end
+
 				default: begin
 					nextState = inicio;
 				end
@@ -214,6 +248,7 @@ always_comb begin
 		end
 
 		Cem: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -246,6 +281,7 @@ always_comb begin
 		end
 
 		Amld: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -277,6 +313,7 @@ always_comb begin
 		end
 
 		Ev: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b1;
@@ -299,6 +336,7 @@ always_comb begin
 		end
 
 		Amsd: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b1;
 			RegWrite = 1'b0;
@@ -321,6 +359,7 @@ always_comb begin
 		end
 
 		Exeadd: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -343,6 +382,7 @@ always_comb begin
 		end
 
 		Exesub: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -365,6 +405,7 @@ always_comb begin
 		end
 
 		Cr: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b1;
 			RegWrite = 1'b1;
@@ -387,6 +428,7 @@ always_comb begin
 		end
 
 		Crcbeq: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -409,6 +451,7 @@ always_comb begin
 		end
 
 		Crcbne: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -431,6 +474,7 @@ always_comb begin
 		end
 
 		Crcbge: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -453,6 +497,7 @@ always_comb begin
 		end
 
 		Crcblt: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -475,6 +520,7 @@ always_comb begin
 		end
 
 		Lui: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b1;
@@ -497,6 +543,7 @@ always_comb begin
 		end
 
 		Exeand: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b0;
@@ -519,6 +566,7 @@ always_comb begin
 		end
 
 		Exeslt: begin
+			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
 			RegWrite = 1'b1;
@@ -538,6 +586,102 @@ always_comb begin
 			LoadAOut = 1'b0;
 			LoadMDR = 1'b0;
 			nextState = inicio;
+		end
+
+		Exeslti: begin
+			Shift = 2'b00;
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b1;
+			LoadIR = 1'b0;
+			MemToReg = 2'b10;
+			ALUSrcA = 2'b01;
+			ALUSrcB = 2'b10;
+			ALUFct = 3'b111;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b0;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		Srli: begin
+			Shift = 2'b01;
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b1;
+			LoadIR = 1'b0;
+			MemToReg = 2'b11;
+			ALUSrcA = 2'b00;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b000;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b0;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		Srai: begin
+			Shift = 2'b10;
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b1;
+			LoadIR = 1'b0;
+			MemToReg = 2'b11;
+			ALUSrcA = 2'b00;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b000;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b0;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		Slli: begin
+			Shift = 2'b00;
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b1;
+			LoadIR = 1'b0;
+			MemToReg = 2'b11;
+			ALUSrcA = 2'b00;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b000;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b0;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		Break: begin
+			nextState = Break;
 		end
 
 		default: begin

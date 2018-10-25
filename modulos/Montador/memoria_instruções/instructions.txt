@@ -1,7 +1,2 @@
-addi x8,x8,3
-bge x8,x0,1
-sub x8,x8,x8
-add x8,x8,x8
-blt x0,x8,1
-add x8,x8,x8
-sub x8,x8,x8
+addi x8,x0,7
+slti x19,x8,9

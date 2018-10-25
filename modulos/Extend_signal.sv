@@ -13,9 +13,9 @@ always_comb begin
 			adm = 1'b0;
 		end
 		7'b0010011: begin //addi
-			aux[11:0] = in[31:20];
-			op = 2'b00;
-			adm = 1'b1;
+				aux[11:0] = in[31:20];
+				op = 2'b00;
+				adm = 1'b1;
 		end
 		7'b0000011: begin //ld
 			aux[11:0] = in[31:20];
@@ -84,9 +84,30 @@ always_comb begin
 		end else if(in[31] == 1'b1) begin
 			out = (64'b1111111111111111111111111111111100000000000000000000000000000000 + auxout);
 		end
-	end else if( adm == 1'b0 ) begin
-		if(menorSinal == 1'b1) out = (64'b0000000000000000000000000000000000000000000000000000000000000001);
-		else out = (64'b0000000000000000000000000000000000000000000000000000000000000000);
+
+		if(in[14:12] == 3'b000) begin
+			adm = 1'b1;
+		end
+		else if(in[14:12] == 3'b010 ) begin
+			adm = 1'b0;
+		end
+	end
+
+	if(in[14:12] == 3'b010 ) begin
+		if( adm == 1'b0 ) begin
+			if(menorSinal == 1'b1) out = (64'b0000000000000000000000000000000000000000000000000000000000000001);
+			else out = (64'b0000000000000000000000000000000000000000000000000000000000000000);
+		end
+	end
+end
+
+always_ff @(posedge menorSinal) begin
+
+	if(in[14:12] == 3'b010 ) begin
+		adm = 1'b0;
+	end
+	else begin
+		adm = 1'b1;
 	end
 end
 endmodule: Extend_signal

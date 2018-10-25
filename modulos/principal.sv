@@ -1,7 +1,11 @@
 module principal(
 	input logic clk,
 	input logic reset,
-	output logic [4:0] stateOut
+	output logic [4:0] stateOut,
+	output logic fio_menor_ExtendS,
+	output logic [63:0] fio_muxWD_regBank,
+	output logic [63:0] fio_MuxA_ALU,
+	output logic [63:0] fio_MuxB_ALU
 );
 	
 	logic fio_UC_memInst;
@@ -21,9 +25,11 @@ module principal(
 	logic fio_zero;
 	logic fio_igual;
 	logic fio_maior;
+	logic [1:0] fio_UC_Shift;
 	logic [1:0] fio_UC_MuxA;
 	logic [1:0] fio_UC_MuxB;
 	logic [2:0] fio_UC_ALU;
+	logic [63:0] fio_Shift_RegBank;
 	logic [63:0] fio_RegMemData_Mux;
 	logic [63:0] fio_MuxALUOut_PC;
 	logic [63:0] fio_MemData_RegMemData;
@@ -34,10 +40,10 @@ module principal(
 	logic [63:0] fio_Stype_memDados;
 	logic [63:0] fio_ALU_ALUOut;
 	logic [63:0] fio_PC_memInst;
-	logic [63:0] fio_muxWD_regBank;
+	// logic [63:0] fio_muxWD_regBank;
 	logic [63:0] fio_ALUOut_MuxALUOut;
-	logic [63:0] fio_MuxA_ALU;
-	logic [63:0] fio_MuxB_ALU;
+	//logic [63:0] fio_MuxA_ALU;
+	//logic [63:0] fio_MuxB_ALU;
 	logic [63:0] fio_Extend_shift;
 	logic [63:0] fio_Shift_MuxB;
 	logic [1:0] fio_memToReg_muxWD;
@@ -47,7 +53,7 @@ module principal(
 	logic [4:0] fio_regInst2420_reg2;
 	logic [4:0] fio_regInst117_WriteReg;
 	logic LoadPC;
-	logic fio_menor_ExtendS;
+	//logic fio_menor_ExtendS;
 
 	register PC(
 		.clk(clk),
@@ -85,6 +91,7 @@ module principal(
 		.func7(fio_regInst_UC[31:25]),
 		.func3(fio_regInst_UC[14:12]),
 		.stateout(stateOut),
+		.Shift(fio_UC_Shift),
 		.Wrl(fio_UC_memInst),
 		.WrD(fio_UC_WrD),
 		.RegWrite(fio_UC_RegBank),
@@ -122,7 +129,7 @@ module principal(
 		.e1(fio_ALUOut_MuxALUOut),
 		.e2(fio_RegMemData_Mux),
 		.e3(fio_Extend_shift),
-		.e4(/*GND*/),
+		.e4(fio_Shift_RegBank),
 		.f(fio_muxWD_regBank)
 	);
 
@@ -194,12 +201,19 @@ module principal(
 		.out(fio_Extend_shift)
 	);
 
-	Deslocamento shift(
+	Deslocamento immediate_shift(
 		.Shift(2'b00),
 		.Entrada(fio_Extend_shift),
 		.N(6'b000001),
 		.Saida(fio_Shift_MuxB)
 	);
+
+	Deslocamento shift(
+		.Shift(fio_UC_Shift),
+		.Entrada(fio_A_MuxA),
+		.N(fio_regInst_UC[25:20]),
+		.Saida(fio_Shift_RegBank)
+	); 
 
 	Memoria64 memData(
 		.raddress(fio_ALUOut_MuxALUOut),
@@ -234,7 +248,7 @@ module principal(
 	
 always_comb begin
 
-	LoadPC <= ((fio_zero & fio_UC_PCWriteCondbeq) | (fio_UC_PCWriteCondbne & !fio_zero) | ( (fio_UC_PCWriteCondbge & fio_maior) & (fio_UC_PCWriteCondbge & fio_igual) ) | (fio_UC_PCWriteCondblt & fio_menor_ExtendS) | fio_UC_PCWrite);
+	LoadPC <= ((fio_zero & fio_UC_PCWriteCondbeq) | (fio_UC_PCWriteCondbne & !fio_zero) | (fio_UC_PCWriteCondbge & fio_maior) | (fio_UC_PCWriteCondbge & fio_igual) | (fio_UC_PCWriteCondblt & fio_menor_ExtendS) | fio_UC_PCWrite);
 end
 
 
