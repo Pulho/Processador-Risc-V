@@ -1,4 +1,9 @@
-addi x10,x0,0
-addi x11,x0,15
-and x12,x10,x11
-addi x12,x12,2
+ld x11,0(x3)
+addi x8,x8,3
+sb x8,0(x3)
+ld x11,0(x3)
+sh x0,0(x3)
+ld x11,0(x3)
+sw x0,0(x3)
+sd x10,0(x3)
+

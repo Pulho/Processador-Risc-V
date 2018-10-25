@@ -166,14 +166,7 @@ always_comb begin
 				end
 
 				7'b0100011: begin //sd
-					case(func3)
-						3'b111: begin
-							nextState = Cem;
-						end
-						default: begin
-							nextState = inicio;
-						end
-					endcase
+					nextState = Cem;
 				end
 
 				7'b1100011: begin //beq
@@ -228,18 +221,8 @@ always_comb begin
 			LoadAOut = 1'b1;
 			LoadMDR = 1'b0;;
 
-			if(OPcode == 7'b0000011) begin
-				if(func3 == 3'b011) begin
-					nextState = Amld;
-				end
-				else nextState = inicio;
-			end
-
-			else if(OPcode == 7'b0100011) begin
-				if(func3 == 3'b111) begin
-					nextState = Amsd;
-				end
-				else nextState = inicio;
+			if(OPcode == 7'b0000011 || OPcode == 7'b0100011) begin
+				nextState = Amld;
 			end
 
 			else if(OPcode == 7'b0010011) begin
@@ -252,7 +235,7 @@ always_comb begin
 
 		Amld: begin
 			Wrl = 1'b0;
-			WrD = 1'b1;
+			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
 			MemToReg = 2'b00;
@@ -267,7 +250,16 @@ always_comb begin
 			LoadRegB = 1'b0;
 			LoadAOut = 1'b0;
 			LoadMDR = 1'b0;
-			nextState = Ev;
+
+			if(OPcode == 7'b0100011) begin
+				nextState = Amsd;
+			end
+			else if(OPcode == 7'b0000011) begin
+				nextState = Ev;
+			end
+			else begin
+				nextState = inicio;
+			end
 		end
 
 		Ev: begin
@@ -305,7 +297,7 @@ always_comb begin
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
-			LoadAOut = 1'b1;
+			LoadAOut = 1'b0;
 			LoadMDR = 1'b0;
 			nextState = inicio;
 		end

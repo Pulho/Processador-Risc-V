@@ -8,20 +8,24 @@ module simulacao;
     logic rst;
     logic [4:0] Out;
     logic [5:0] cont;
-    logic [63:0] regA;
+    logic [63:0] stype;
+    logic [63:0] regLD;
     logic [63:0] regB;
+    logic [31:0] Instr;
     logic [63:0] outAlu;
     logic [63:0] outAluOut;
+    logic [63:0] inB;
 
     principal test (
         .clk(clk), 
         .reset(rst),       
         .stateOut(Out),
         .fio_muxWD_regBank(inB),
-        .fio_MuxA_ALU(regA),
-        .fio_MuxB_ALU(regB),
-        .fio_ALU_ALUOut(outAlu),
-        .fio_ALUOut_MuxALUOut(outAluOut)
+        .fio_Stype_memDados(stype),
+        .fio_B_MuxB(regB),
+        .fio_regInst_UC(Instr),
+        .fio_ALUOut_MuxALUOut(outAluOut),
+        .fio_MemData_RegMemData(regLD)
     ); 
 
     initial begin 
@@ -46,6 +50,6 @@ module simulacao;
     
     initial begin
         clk = 1'b1;
-        $monitor($time,"stateOut - %b | regA - %b | regB - %b\n\n| outAlu - %b | outAluOut - %b\n\n\n", Out, regA, regB, outAlu, outAluOut);
+        $monitor($time,"stateOut - %b | AluOut - %b\nstype - %b | regB - %b\nfunc3 - %b | inB - %b\n\nregLD - %b\n", Out, outAluOut, stype, regB, Instr[14:12], inB, regLD);
     end
 endmodule: simulacao
