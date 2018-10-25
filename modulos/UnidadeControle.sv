@@ -17,6 +17,8 @@ module UnidadeControle(
 	output logic PCWrite,
 	output logic PCWriteCondbeq,
 	output logic PCWriteCondbne,
+	output logic PCWriteCondbge,
+	output logic PCWriteCondblt,
 	output logic PCSource,
 	output logic LoadRegA,
 	output logic LoadRegB,
@@ -39,6 +41,8 @@ logic [4:0] Crcbne = 5'b01011;
 logic [4:0] Lui = 5'b01100;
 logic [4:0] Exeand = 5'b01101;
 logic [4:0] Exeslt = 5'b01110;
+logic [4:0] Crcbge = 5'b01111;
+logic [4:0] Crcblt = 5'b10000;
 
 
 logic [3:0] state; 
@@ -68,6 +72,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -88,6 +94,8 @@ always_comb begin
 			PCWrite = 1'b1;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -108,6 +116,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b1;
 			LoadRegB = 1'b1;
@@ -215,6 +225,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -245,6 +257,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -274,6 +288,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -294,6 +310,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -314,6 +332,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -334,6 +354,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -354,6 +376,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -374,6 +398,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b1;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b1;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -394,6 +420,52 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b1;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b1;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b1;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		Crcbge: begin
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b0;
+			LoadIR = 1'b0;
+			MemToReg = 2'b00;
+			ALUSrcA = 2'b01;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b111;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b1;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b1;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b1;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		Crcblt: begin
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b0;
+			LoadIR = 1'b0;
+			MemToReg = 2'b00;
+			ALUSrcA = 2'b01;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b111;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b1;
 			PCSource = 1'b1;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -414,6 +486,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -434,6 +508,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
@@ -454,6 +530,8 @@ always_comb begin
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
 			PCSource = 1'b0;
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;

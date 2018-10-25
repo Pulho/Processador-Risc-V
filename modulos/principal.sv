@@ -1,13 +1,7 @@
 module principal(
 	input logic clk,
 	input logic reset,
-	output logic [4:0] stateOut,
-	output logic [63:0] fio_B_MuxB,
-	output logic [63:0] fio_Stype_memDados,
-	output logic [63:0] fio_muxWD_regBank,
-	output logic [31:0] fio_regInst_UC, 
-	output logic [63:0] fio_ALUOut_MuxALUOut,
-	output logic [63:0] fio_MemData_RegMemData
+	output logic [4:0] stateOut
 );
 	
 	logic fio_UC_memInst;
@@ -21,30 +15,34 @@ module principal(
 	logic fio_UC_LoadMDR;
 	logic fio_UC_PCWriteCondbeq;
 	logic fio_UC_PCWriteCondbne;
+	logic fio_UC_PCWriteCondbge;
+	logic fio_UC_PCWriteCondblt;
 	logic fio_UC_PCWrite;
 	logic fio_zero;
+	logic fio_igual;
+	logic fio_maior;
 	logic [1:0] fio_UC_MuxA;
 	logic [1:0] fio_UC_MuxB;
 	logic [2:0] fio_UC_ALU;
 	logic [63:0] fio_RegMemData_Mux;
 	logic [63:0] fio_MuxALUOut_PC;
-	//logic [63:0] fio_MemData_RegMemData;
+	logic [63:0] fio_MemData_RegMemData;
 	logic [63:0] fio_RegBank_A;
 	logic [63:0] fio_RegBank_B;
 	logic [63:0] fio_A_MuxA;
-	//logic [63:0] fio_B_MuxB;
-	//logic [63:0] fio_Stype_memDados;
+	logic [63:0] fio_B_MuxB;
+	logic [63:0] fio_Stype_memDados;
 	logic [63:0] fio_ALU_ALUOut;
 	logic [63:0] fio_PC_memInst;
-	//logic [63:0] fio_muxWD_regBank;
-	//logic [63:0] fio_ALUOut_MuxALUOut;
+	logic [63:0] fio_muxWD_regBank;
+	logic [63:0] fio_ALUOut_MuxALUOut;
 	logic [63:0] fio_MuxA_ALU;
 	logic [63:0] fio_MuxB_ALU;
 	logic [63:0] fio_Extend_shift;
 	logic [63:0] fio_Shift_MuxB;
 	logic [1:0] fio_memToReg_muxWD;
 	logic [31:0] fio_memInst_regInst;
-	//logic [31:0] fio_regInst_UC;
+	logic [31:0] fio_regInst_UC;
 	logic [4:0] fio_regInst1915_reg1;
 	logic [4:0] fio_regInst2420_reg2;
 	logic [4:0] fio_regInst117_WriteReg;
@@ -98,6 +96,8 @@ module principal(
 		.PCWrite(fio_UC_PCWrite),
 		.PCWriteCondbeq(fio_UC_PCWriteCondbeq),
 		.PCWriteCondbne(fio_UC_PCWriteCondbne),
+		.PCWriteCondbge(fio_UC_PCWriteCondbge),
+		.PCWriteCondblt(fio_UC_PCWriteCondblt),
 		.PCSource(fio_UC_MuxALUOut),
 		.LoadRegA(fio_UC_LDA),
 		.LoadRegB(fio_UC_LDB),
@@ -176,8 +176,8 @@ module principal(
 		.Overflow(),
 		.Negativo(),
 		.z(fio_zero),
-		.Igual(),
-		.Maior(),
+		.Igual(fio_igual),
+		.Maior(fio_maior),
 		.Menor(fio_menor_ExtendS)
 	);
 
@@ -234,7 +234,7 @@ module principal(
 	
 always_comb begin
 
-	LoadPC <= ((fio_zero & fio_UC_PCWriteCondbeq) | (fio_UC_PCWriteCondbne & !fio_zero) | fio_UC_PCWrite);
+	LoadPC <= ((fio_zero & fio_UC_PCWriteCondbeq) | (fio_UC_PCWriteCondbne & !fio_zero) | ( (fio_UC_PCWriteCondbge & fio_maior) & (fio_UC_PCWriteCondbge & fio_igual) ) | (fio_UC_PCWriteCondblt & fio_menor_ExtendS) | fio_UC_PCWrite);
 end
 
 

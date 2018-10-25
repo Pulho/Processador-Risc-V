@@ -1,9 +1,7 @@
-ld x11,0(x3)
 addi x8,x8,3
-sb x8,0(x3)
-ld x11,0(x3)
-sh x0,0(x3)
-ld x11,0(x3)
-sw x0,0(x3)
-sd x10,0(x3)
-
+bge x8,x0,1
+sub x8,x8,x8
+add x8,x8,x8
+blt x0,x8,1
+add x8,x8,x8
+sub x8,x8,x8
