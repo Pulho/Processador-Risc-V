@@ -32,7 +32,7 @@ logic [4:0] BInst = 5'b00001;
 logic [4:0] IDecod = 5'b00010; 
 logic [4:0] Cem = 5'b00011;
 logic [4:0] Amld = 5'b00100;
-logic [4:0] Evld = 5'b00101;
+logic [4:0] Ev = 5'b00101;
 logic [4:0] Amsd = 5'b00110;
 logic [4:0] Exeadd = 5'b00111;
 logic [4:0] Exesub = 5'b01000;
@@ -49,15 +49,15 @@ logic [4:0] Srai = 5'b10010;
 logic [4:0] Slli = 5'b10011;
 logic [4:0] Break = 5'b10100;
 logic [4:0] Exeslti = 5'b10101;
-logic [4:0] Amsw = 5'b10110;//Precisa criar
-logic [4:0] Amsh = 5'b10111;//Precisa criar
-logic [4:0] Amsb = 5'b11000;//Precisa criar
-logic [4:0] Jal = 5'b11001;//Precisa criar
-logic [4:0] Crcjalr = 5'b11010;//Precisa criar
-logic [4:0] Evlw = 5'b11011;//Precisa criar
-logic [4:0] Evlbu = 5'b11100;//Precisa criar
-logic [4:0] Evlh = 5'b11101;//Precisa criar
-logic [4:0] Nop = 5'b11110;//Precisa criar e colocar junto do case do addi
+logic [4:0] Jal = 5'b10110;//Precisa criar
+logic [4:0] Crcjalr = 5'b10111;//Precisa criar
+logic [4:0] Nop = 5'b11000;//Precisa criar
+//logic [4:0] Jal = 5'b11001;//Precisa criar
+//logic [4:0] Crcjalr = 5'b11010;//Precisa criar
+//logic [4:0] Evlw = 5'b11011;//Precisa criar
+//logic [4:0] Evlbu = 5'b11100;//Precisa criar
+//logic [4:0] Evlh = 5'b11101;//Precisa criar
+//logic [4:0] Nop = 5'b11110;//Precisa criar e colocar junto do case do addi
 
 
 
@@ -318,7 +318,8 @@ always_comb begin
 			LoadMDR = 1'b0;
 
 			if(OPcode == 7'b0100011) begin
-				case(func3)
+				nextState = Amsd;
+				/*case(func3)
 					3'b111: begin
 						nextState = Amsd;
 					end
@@ -338,10 +339,11 @@ always_comb begin
 					default: begin
 						nextState = inicio;
 					end
-				endcase
+				endcase*/
 			end
 			else if(OPcode == 7'b0000011) begin
-				case(func3)
+				nextState = Ev;
+				/*case(func3)
 					3'b011: begin // ld
 						nextState = Evld;
 					end
@@ -361,14 +363,14 @@ always_comb begin
 					default: begin
 						nextState = inicio;
 					end
-				endcase
+				endcase*/
 			end
 			else begin
 				nextState = inicio;
 			end
 		end
 
-		Evld: begin
+		Ev: begin
 			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
