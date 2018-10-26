@@ -1,6 +1,7 @@
 module UnidadeControle(
 	input logic clk, 
 	input logic reset,
+	input logic [31:0] Instr,
 	input logic [6:0] OPcode,
 	input logic [6:0] func7,
 	input logic [2:0] func3,
@@ -49,7 +50,6 @@ logic [4:0] Srai = 5'b10010;
 logic [4:0] Slli = 5'b10011;
 logic [4:0] Break = 5'b10100;
 logic [4:0] Exeslti = 5'b10101;
-
 
 logic [4:0] state; 
 logic [4:0] nextState;
@@ -133,112 +133,116 @@ always_comb begin
 			LoadAOut = 1'b1;
 			LoadMDR = 1'b0;
 
-			case(OPcode)
+			if(Instr = 32'b00000000000000000000000000010011) begin
+				nextState = inicio;
+			end
+			else begin
+				case(OPcode)
 
-				7'b0110011: begin //Tipo R
-					case(func7)
+					7'b0110011: begin //Tipo R
+						case(func7)
 
-						7'b0000000: begin
-							case(func3)
-								3'b000: begin
-									nextState = Exeadd;
-								end
-								3'b010: begin
-									nextState = Exeslt;
-								end
-								3'b111: begin
-									nextState = Exeand;
-								end
-							endcase
-						end
+							7'b0000000: begin
+								case(func3)
+									3'b000: begin
+										nextState = Exeadd;
+									end
+									3'b010: begin
+										nextState = Exeslt;
+									end
+									3'b111: begin
+										nextState = Exeand;
+									end
+								endcase
+							end
 
-						7'b0100000: begin
-							nextState = Exesub;
-						end
+							7'b0100000: begin
+								nextState = Exesub;
+							end
 
-						default: begin
-							nextState = inicio;
-						end
-					endcase
-				end
+							default: begin
+								nextState = inicio;
+							end
+						endcase
+					end
 
-				7'b0010011: begin //addi
-					case(func3)
-						3'b000: begin
-							nextState = Cem;
-						end
-						3'b101: begin
-							if(func7[5] == 1'b0) begin // Srli
-								nextState = Srli;
-							end 
-							else begin // Srai
-								nextState = Srai;
-							end 
-						end
-						3'b001: begin // Slli
-							nextState = Slli;
-						end
+					7'b0010011: begin //addi
+						case(func3)
+							3'b000: begin
+								nextState = Cem;
+							end
+							3'b101: begin
+								if(func7[5] == 1'b0) begin // Srli
+									nextState = Srli;
+								end 
+								else begin // Srai
+									nextState = Srai;
+								end 
+							end
+							3'b001: begin // Slli
+								nextState = Slli;
+							end
 
-						3'b010: begin //slti
-							nextState = Exeslti;
-						end
+							3'b010: begin //slti
+								nextState = Exeslti;
+							end
 
-						default: begin
-							nextState = inicio;
-						end
-						
-					endcase
-				end
+							default: begin
+								nextState = inicio;
+							end
+							
+						endcase
+					end
 
-				7'b0000011: begin //Loads
-					nextState = Cem;
-				end
+					7'b0000011: begin //Loads
+						nextState = Cem;
+					end
 
-				7'b0100011: begin //sd
-					nextState = Cem;
-				end
+					7'b0100011: begin //sd
+						nextState = Cem;
+					end
 
-				7'b1100011: begin //beq
-					case(func3)
-						3'b000: begin
-							nextState = Crcbeq;
-						end
-						default: begin
-							nextState = inicio;
-						end
-					endcase
-				end
+					7'b1100011: begin //beq
+						case(func3)
+							3'b000: begin
+								nextState = Crcbeq;
+							end
+							default: begin
+								nextState = inicio;
+							end
+						endcase
+					end
 
-				7'b1100111: begin //bne && bge && blt
-					case(func3)
-						3'b001: begin // bne
-							nextState = Crcbne;
-						end
-						3'b101: begin // bge
-							nextState = Crcbge;
-						end
-						3'b100: begin // blt
-							nextState = Crcblt;
-						end
-						default: begin
-							nextState = inicio;
-						end
-					endcase
-				end
+					7'b1100111: begin //bne && bge && blt
+						case(func3)
+							3'b001: begin // bne
+								nextState = Crcbne;
+							end
+							3'b101: begin // bge
+								nextState = Crcbge;
+							end
+							3'b100: begin // blt
+								nextState = Crcblt;
+							end
+							default: begin
+								nextState = inicio;
+							end
+						endcase
+					end
 
-				7'b0110111: begin //lui
-					nextState = Lui;
-				end
+					7'b0110111: begin //lui
+						nextState = Lui;
+					end
 
-				7'b1110011: begin //break
-					nextState = Break;
-				end
+					7'b1110011: begin //break
+						nextState = Break;
+					end
 
-				default: begin
-					nextState = inicio;
-				end
-
-			endcase
+					default: begin
+						nextState = inicio;
+					end
+				endcase
+			end
 
 		end
 
