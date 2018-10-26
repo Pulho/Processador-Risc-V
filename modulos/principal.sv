@@ -231,6 +231,12 @@ module principal(
 		.regWR(fio_Stype_memDados)
 	);
 
+	Load i_type(
+		.func3(fio_regInst_UC[14:12]),
+    	.regBase(fio_B_MuxB),
+    	.regWR(fio_Itype_reg_bank)
+	);
+
 	/*
 	register RegMemData(
 		.clk(clk),
