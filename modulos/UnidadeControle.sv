@@ -133,7 +133,7 @@ always_comb begin
 			LoadAOut = 1'b1;
 			LoadMDR = 1'b0;
 
-			if(Instr = 32'b00000000000000000000000000010011) begin
+			if(Instr == 32'b00000000000000000000000000010011) begin
 				nextState = inicio;
 			end
 			else begin
@@ -243,7 +243,6 @@ always_comb begin
 					end
 				endcase
 			end
-
 		end
 
 		Cem: begin

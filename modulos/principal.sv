@@ -91,6 +91,7 @@ module principal(
 	UnidadeControle controle(
 		.clk(clk),
 		.reset(reset),
+		.Instr(fio_regInst_UC),
 		.OPcode(fio_regInst_UC[6:0]),
 		.func7(fio_regInst_UC[31:25]),
 		.func3(fio_regInst_UC[14:12]),
