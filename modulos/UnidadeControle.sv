@@ -719,7 +719,7 @@ always_comb begin
 			LoadIR = 1'b0;
 			MemToReg = 3'b100;
 			ALUSrcA = 2'b01;
-			ALUSrcB = 2'b11;
+			ALUSrcB = 2'b10;
 			ALUFct = 3'b001;
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
