@@ -1,13 +1,13 @@
 module UnidadeControle(
 	input logic clk, 
 	input logic reset,
+	input logic [31:0] Instr,
 	input logic [6:0] OPcode,
 	input logic [6:0] func7,
 	input logic [2:0] func3,
 
 	output logic [4:0] stateout,
 	output logic [1:0] Shift,
-	//output logic Extend,
 	output logic Wrl,
 	output logic WrD,
 	output logic RegWrite,
@@ -50,15 +50,6 @@ logic [4:0] Srai = 5'b10010;
 logic [4:0] Slli = 5'b10011;
 logic [4:0] Break = 5'b10100;
 logic [4:0] Exeslti = 5'b10101;
-logic [4:0] Jal = 5'b10110;//Precisa criar
-logic [4:0] Crcjalr = 5'b10111;//Precisa criar
-logic [4:0] Nop = 5'b11000;//Precisa criar
-//logic [4:0] Jal = 5'b11001;//Precisa criar
-//logic [4:0] Crcjalr = 5'b11010;//Precisa criar
-//logic [4:0] Evlw = 5'b11011;//Precisa criar
-//logic [4:0] Evlbu = 5'b11100;//Precisa criar
-//logic [4:0] Evlh = 5'b11101;//Precisa criar
-//logic [4:0] Nop = 5'b11110;//Precisa criar e colocar junto do case do addi
 
 logic [4:0] state; 
 logic [4:0] nextState;
@@ -142,123 +133,117 @@ always_comb begin
 			LoadAOut = 1'b1;
 			LoadMDR = 1'b0;
 
-			case(OPcode)
+			if(Instr = 32'b00000000000000000000000000010011) begin
+				nextState = inicio;
+			end
+			else begin
+				case(OPcode)
 
-				7'b0110011: begin //Tipo R
-					case(func7)
+					7'b0110011: begin //Tipo R
+						case(func7)
 
-						7'b0000000: begin
-							case(func3)
-								3'b000: begin // add
-									nextState = Exeadd;
-								end
-								3'b010: begin // slt
-									nextState = Exeslt;
-								end
-								3'b111: begin // and
-									nextState = Exeand;
-								end
-							endcase
-						end
+							7'b0000000: begin
+								case(func3)
+									3'b000: begin
+										nextState = Exeadd;
+									end
+									3'b010: begin
+										nextState = Exeslt;
+									end
+									3'b111: begin
+										nextState = Exeand;
+									end
+								endcase
+							end
 
-						7'b0100000: begin // sub
-							nextState = Exesub;
-						end
+							7'b0100000: begin
+								nextState = Exesub;
+							end
 
-						default: begin
-							nextState = inicio;
-						end
-					endcase
-				end
+							default: begin
+								nextState = inicio;
+							end
+						endcase
+					end
 
-				7'b0010011: begin //addi
-					case(func3)
-						3'b000: begin
-							nextState = Cem;
-						end
-						3'b101: begin
-							if(func7[5] == 1'b0) begin // Srli
-								nextState = Srli;
-							end 
-							else begin // Srai
-								nextState = Srai;
-							end 
-						end
-						3'b001: begin // Slli
-							nextState = Slli;
-						end
+					7'b0010011: begin //addi
+						case(func3)
+							3'b000: begin
+								nextState = Cem;
+							end
+							3'b101: begin
+								if(func7[5] == 1'b0) begin // Srli
+									nextState = Srli;
+								end 
+								else begin // Srai
+									nextState = Srai;
+								end 
+							end
+							3'b001: begin // Slli
+								nextState = Slli;
+							end
 
-						3'b010: begin //slti
-							nextState = Exeslti;
-						end
-						default: begin
-							nextState = inicio;
-						end
-					endcase
-				end
+							3'b010: begin //slti
+								nextState = Exeslti;
+							end
 
-				7'b0000011: begin //ld
-					case(func3)
-						3'b011: begin
-							nextState = Cem;
-						end
-						default: begin
-							nextState = inicio;
-						end
-					endcase
-				end
+							default: begin
+								nextState = inicio;
+							end
+							
+						endcase
+					end
 
-				7'b0100011: begin //sd && sw && sh && sb
-					nextState = Cem;
-				end
+					7'b0000011: begin //Loads
+						nextState = Cem;
+					end
 
-				7'b1100011: begin //beq
-					case(func3)
-						3'b000: begin
-							nextState = Crcbeq;
-						end
-						default: begin
-							nextState = inicio;
-						end
-					endcase
-				end
+					7'b0100011: begin //sd
+						nextState = Cem;
+					end
 
-				7'b1100111: begin //bne && bge && blt && jalr
-					case(func3)
-						3'b000: begin // jalr
-							nextState = Crcjalr;
-						end
-						3'b001: begin // bne
-							nextState = Crcbne;
-						end
-						3'b101: begin // bge
-							nextState = Crcbge;
-						end
-						3'b100: begin // blt
-							nextState = Crcblt;
-						end
-						default: begin
-							nextState = inicio;
-						end
-					endcase
-				end
+					7'b1100011: begin //beq
+						case(func3)
+							3'b000: begin
+								nextState = Crcbeq;
+							end
+							default: begin
+								nextState = inicio;
+							end
+						endcase
+					end
 
-				7'b0110111: begin //lui
-					nextState = Lui;
-				end
+					7'b1100111: begin //bne && bge && blt
+						case(func3)
+							3'b001: begin // bne
+								nextState = Crcbne;
+							end
+							3'b101: begin // bge
+								nextState = Crcbge;
+							end
+							3'b100: begin // blt
+								nextState = Crcblt;
+							end
+							default: begin
+								nextState = inicio;
+							end
+						endcase
+					end
 
-				7'b1101111: begin //jal
-					nextState = Jal;
-				end
+					7'b0110111: begin //lui
+						nextState = Lui;
+					end
 
-				7'b1110011: begin //break
-					nextState = Break;
-				end
+					7'b1110011: begin //break
+						nextState = Break;
+					end
 
-				default: begin
-					nextState = inicio;
-				end
-			endcase
+					default: begin
+						nextState = inicio;
+					end
+				endcase
+			end
+
 		end
 
 		Cem: begin
@@ -280,7 +265,7 @@ always_comb begin
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
 			LoadAOut = 1'b1;
-			LoadMDR = 1'b0;
+			LoadMDR = 1'b0;;
 
 			if(OPcode == 7'b0000011 || OPcode == 7'b0100011) begin
 				nextState = Amld;
@@ -317,82 +302,16 @@ always_comb begin
 
 			if(OPcode == 7'b0100011) begin
 				nextState = Amsd;
-				/*case(func3)
-					3'b111: begin
-						nextState = Amsd;
-					end
-
-					3'b010: begin //Sw
-						nextState = Amsw;
-					end
-					
-					3'b001: begin //Sh
-						nextState = Amsh;
-					end
-
-					3'b000: begin //Sb
-						nextState = Amsb;
-					end	
-
-					default: begin
-						nextState = inicio;
-					end
-				endcase*/
 			end
 			else if(OPcode == 7'b0000011) begin
 				nextState = Ev;
-				/*case(func3)
-					3'b011: begin // ld
-						nextState = Ev;
-					end
-
-					3'b010: begin // lw
-            			nextState = Extend;
-					end
-
-					3'b100: begin // lbu
-						nextState = Ev;
-					end
-
-					3'b001: begin // lh
-            			nextState = Extend;
-					end
-
-					default: begin
-						nextState = inicio;
-					end
-				endcase*/
 			end
 			else begin
 				nextState = inicio;
 			end
 		end
 
-    Extend: begin
-    	Shift = 2'b00;
-			Extend = 1'b1;
-			Wrl = 1'b0;
-			WrD = 1'b0;
-			RegWrite = 1'b0;
-			LoadIR = 1'b0;
-			MemToReg = 2'b00;
-			ALUSrcA = 2'b00;
-			ALUSrcB = 2'b00;
-			ALUFct = 3'b000;
-			PCWrite = 1'b0;
-			PCWriteCondbeq = 1'b0;
-			PCWriteCondbne = 1'b0;
-			PCWriteCondbge = 1'b0;
-			PCWriteCondblt = 1'b0;
-			PCSource = 1'b0;
-			LoadRegA = 1'b0;
-			LoadRegB = 1'b0;
-			LoadAOut = 1'b0;
-			LoadMDR = 1'b00;
-			nextState = inicio;
-		end
-    
-    Ev: begin
+		Ev: begin
 			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
