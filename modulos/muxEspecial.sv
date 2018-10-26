@@ -1,10 +1,11 @@
 module muxEspecial(
 	input logic sinalMenor,
-	input logic [1:0] sel,
+	input logic [2:0] sel,
 	input logic [63:0] e1,
 	input logic [63:0] e2,
 	input logic [63:0] e3,
 	input logic [63:0] e4,
+	input logic [63:0] e5,
 	input logic [31:0] inst,
 	output logic [63:0] f
 );
@@ -64,21 +65,29 @@ always_comb begin
 
 		case(sel)
 
-			2'b00: begin
+			3'b000: begin
 				f = e1;
 			end
 
-			2'b01: begin
+			3'b001: begin
 				f = e2;
 			end
 
-			2'b10: begin
+			3'b010: begin
 				f = e3;
 			end
 
-			2'b11: begin
+			3'b011: begin
 				f = e4;
 			end
+
+			3'b100: begin
+				f = e5;
+			end
+
+			default: begin
+				f = 64'b0000000000000000000000000000000000000000000000000000000000000000; 
+			end 
 		endcase
 	end
 end

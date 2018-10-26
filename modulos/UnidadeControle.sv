@@ -12,7 +12,7 @@ module UnidadeControle(
 	output logic WrD,
 	output logic RegWrite,
 	output logic LoadIR,
-	output logic [1:0]MemToReg,
+	output logic [2:0]MemToReg,
 	output logic [1:0] ALUSrcA,
 	output logic [1:0] ALUSrcB,
 	output logic [2:0] ALUFct,
@@ -50,6 +50,9 @@ logic [4:0] Srai = 5'b10010;
 logic [4:0] Slli = 5'b10011;
 logic [4:0] Break = 5'b10100;
 logic [4:0] Exeslti = 5'b10101;
+logic [4:0] Crcjal = 5'b10110;
+logic [4:0] DecodJalr = 5'b10111;
+logic [4:0] Crcjalr = 5'b11000;
 
 logic [4:0] state; 
 logic [4:0] nextState;
@@ -72,7 +75,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b000;
@@ -95,7 +98,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b1;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b01;
 			ALUFct = 3'b001;
@@ -118,7 +121,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b1;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b11;
 			ALUFct = 3'b001;
@@ -224,10 +227,17 @@ always_comb begin
 							3'b100: begin // blt
 								nextState = Crcblt;
 							end
+							3'b000: begin // jalr
+								nextState = DecodJalr;
+							end 
 							default: begin
 								nextState = inicio;
 							end
 						endcase
+					end
+
+					7'b1101111: begin // jal
+						nextState = Crcjal;
 					end
 
 					7'b0110111: begin //lui
@@ -251,7 +261,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b10;
 			ALUFct = 3'b001;
@@ -284,7 +294,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b000;
@@ -316,7 +326,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
-			MemToReg = 2'b01;
+			MemToReg = 3'b001;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b000;
@@ -339,7 +349,7 @@ always_comb begin
 			WrD = 1'b1;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b000;
@@ -362,7 +372,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b001;
@@ -385,7 +395,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b010;
@@ -408,7 +418,7 @@ always_comb begin
 			WrD = 1'b1;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 2'b00;
@@ -431,7 +441,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b010;
@@ -454,7 +464,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b010;
@@ -477,7 +487,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b111;
@@ -500,7 +510,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b111;
@@ -523,7 +533,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
-			MemToReg = 2'b10;
+			MemToReg = 3'b010;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b000;
@@ -546,7 +556,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b0;
 			LoadIR = 1'b0;
-			MemToReg = 2'b00;
+			MemToReg = 3'b000;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b011;
@@ -569,7 +579,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
-			MemToReg = 2'b10;
+			MemToReg = 3'b010;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b111;
@@ -592,7 +602,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
-			MemToReg = 2'b10;
+			MemToReg = 3'b010;
 			ALUSrcA = 2'b01;
 			ALUSrcB = 2'b10;
 			ALUFct = 3'b111;
@@ -615,7 +625,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
-			MemToReg = 2'b11;
+			MemToReg = 3'b011;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b000;
@@ -638,7 +648,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
-			MemToReg = 2'b11;
+			MemToReg = 3'b011;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b000;
@@ -661,7 +671,7 @@ always_comb begin
 			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
-			MemToReg = 2'b11;
+			MemToReg = 3'b011;
 			ALUSrcA = 2'b00;
 			ALUSrcB = 2'b00;
 			ALUFct = 3'b000;
@@ -674,6 +684,75 @@ always_comb begin
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
 			LoadAOut = 1'b0;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		Crcjal: begin
+			Shift = 2'b00;
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b1;
+			LoadIR = 1'b0;
+			MemToReg = 3'b100;
+			ALUSrcA = 2'b00;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b000;
+			PCWrite = 1'b1;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b1;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b1;
+			LoadMDR = 1'b0;
+			nextState = inicio;
+		end
+
+		DecodJalr: begin
+			Shift = 2'b00;
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b0;
+			LoadIR = 1'b0;
+			MemToReg = 3'b100;
+			ALUSrcA = 2'b01;
+			ALUSrcB = 2'b11;
+			ALUFct = 3'b001;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b1;
+			LoadMDR = 1'b0;
+			nextState = Crcjalr;
+		end
+
+		Crcjalr: begin
+			Shift = 2'b00;
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b0;
+			LoadIR = 1'b0;
+			MemToReg = 3'b000;
+			ALUSrcA = 2'b00;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b000;
+			PCWrite = 1'b1;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b1;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b1;
 			LoadMDR = 1'b0;
 			nextState = inicio;
 		end

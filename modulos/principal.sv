@@ -9,6 +9,7 @@ module principal(
 	output logic [63:0] fio_MuxB_ALU,
 	output logic [63:0] fio_ALU_ALUOut,
 	output logic [63:0] fio_ALUOut_MuxALUOut,
+	output logic [63:0] fio_MuxALUOut_PC,
 	output logic [63:0] fio_RegMemData_Mux
 );
 	
@@ -35,7 +36,7 @@ module principal(
 	logic [2:0] fio_UC_ALU;
 	logic [63:0] fio_Shift_RegBank;
 	//logic [63:0] fio_RegMemData_Mux;
-	logic [63:0] fio_MuxALUOut_PC;
+	//logic [63:0] fio_MuxALUOut_PC;
 	logic [63:0] fio_MemData_RegMemData;
 	logic [63:0] fio_RegBank_A;
 	logic [63:0] fio_RegBank_B;
@@ -50,7 +51,7 @@ module principal(
 	//logic [63:0] fio_MuxB_ALU;
 	logic [63:0] fio_Extend_shift;
 	logic [63:0] fio_Shift_MuxB;
-	logic [1:0] fio_memToReg_muxWD;
+	logic [2:0] fio_memToReg_muxWD;
 	logic [31:0] fio_memInst_regInst;
 	logic [31:0] fio_regInst_UC;
 	logic [4:0] fio_regInst1915_reg1;
@@ -145,6 +146,7 @@ module principal(
 		.e2(fio_RegMemData_Mux),
 		.e3(fio_Extend_shift),
 		.e4(fio_Shift_RegBank),
+		.e5(fio_PC_memInst),
 		.inst(fio_regInst_UC),
 		.f(fio_muxWD_regBank)
 	);
