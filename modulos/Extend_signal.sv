@@ -1,4 +1,5 @@
 module Extend_signal( input logic menorSinal, input logic [31:0] in, output logic [63:0] out );
+	
 logic adm;
 logic [1:0] op;
 logic [11:0] aux;
