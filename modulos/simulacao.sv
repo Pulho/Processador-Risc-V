@@ -7,22 +7,27 @@ module simulacao;
     logic clk;
     logic rst;
     logic [4:0] Out;
-    logic [5:0] cont;
+    logic [6:0] cont;
+    logic [63:0] regBank;
     logic [63:0] aAlu;
     logic [63:0] bAlu;
-    logic Sg;
-    logic [63:0] mux;
+    logic [63:0] aluOut;
+    logic [63:0] outAluOut;
+    logic [63:0] e2;
+    logic [63:0] s_type;
 
 
     principal test (
         .clk(clk), 
         .reset(rst),       
         .stateOut(Out),
-        .fio_muxWD_regBank(mux),
+        .fio_Stype_memDados(s_type),
+        .fio_muxWD_regBank(regBank),
         .fio_MuxA_ALU(aAlu),
         .fio_MuxB_ALU(bAlu),
-        .fio_menor_ExtendS(Sg)
-
+        .fio_ALU_ALUOut(aluOut),
+        .fio_ALUOut_MuxALUOut(outAluOut),
+        .fio_RegMemData_Mux(e2)
     ); 
 
     initial begin 
@@ -40,13 +45,13 @@ module simulacao;
         if(rst) begin
             cont<= 0;
         end else begin
-            if( cont == 6'b111111 ) $finish;
-            else cont <= cont + 6'b000001;
+            if( cont == 7'b1111111 ) $finish;
+            else cont <= cont + 7'b0000001;
         end 
     end
     
     initial begin
         clk = 1'b1;
-        $monitor($time,"stateOut - %b | Sg - %b | mux - %b\n\t\t\t\taAlu - %b | bAlu - %b\n\n", Out, Sg, mux, aAlu, bAlu);
+        $monitor($time,"stateOut - %b | aAlu - %b | bAlu - %b\n\t\t\t\taluOut - %b | outAluOut - %b\n\t\t\t\te2 - %b |  regBank - %b\n\t\t\t\tsType - %b\n\n", Out, aAlu, bAlu, aluOut, outAluOut, e2, regBank, s_type);
     end
 endmodule: simulacao

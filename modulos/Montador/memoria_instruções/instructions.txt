@@ -1,2 +1,12 @@
-addi x8,x0,7
-slti x19,x8,9
+addi x8,x0,15
+ld x11,0(x3)
+sb x8,0(x3)
+lbu x12,0(x3)
+sh x8,0(x3)
+lh x11,0(x3)
+sw x8,0(x3)
+lw x10,0(x3)
+sd x8,0(x3)
+ld x9,0(x3)
+and x8,x8,x9
+break
