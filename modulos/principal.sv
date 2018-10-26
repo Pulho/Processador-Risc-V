@@ -123,13 +123,24 @@ module principal(
 		.dataout1(fio_RegBank_A),
 		.dataout2(fio_RegBank_B)
 	);
-
+/*
 	mux mux_Write_data(
 		.sel(fio_memToReg_muxWD),
 		.e1(fio_ALUOut_MuxALUOut),
 		.e2(fio_RegMemData_Mux),
 		.e3(fio_Extend_shift),
 		.e4(fio_Shift_RegBank),
+		.f(fio_muxWD_regBank)
+	);
+*/
+	muxEspecial mux_Write_data(
+		.sinalMenor(fio_menor_ExtendS),
+		.sel(fio_memToReg_muxWD),
+		.e1(fio_ALUOut_MuxALUOut),
+		.e2(fio_RegMemData_Mux),
+		.e3(fio_Extend_shift),
+		.e4(fio_Shift_RegBank),
+		.inst(fio_regInst_UC),
 		.f(fio_muxWD_regBank)
 	);
 
