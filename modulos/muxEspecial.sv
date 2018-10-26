@@ -60,15 +60,7 @@ always_comb begin
 		endcase
 	end
 
-	else if( (inst[6:0] == 7'b0110011) || 
-			(inst[6:0] == 7'b0010011 && inst[14:12] != 3'b010) ||
-			(inst[6:0] == 7'b1100111) ||
-			(inst[6:0] == 7'b1110011) ||
-			(inst[6:0] == 7'b0100011) ||
-			(inst[6:0] == 7'b1100011) ||
-			(inst[6:0] == 7'b0110111) ||
-			(inst[6:0] == 7'b1101111)
-			) begin
+	else begin
 
 		case(sel)
 
@@ -88,11 +80,6 @@ always_comb begin
 				f = e4;
 			end
 		endcase
-	end
-
-	else begin
-
-		f = 64'b0000000000000000000000000000000000000000000000000000000000000000;
 	end
 end
 

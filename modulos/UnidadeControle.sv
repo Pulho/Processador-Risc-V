@@ -182,21 +182,16 @@ always_comb begin
 						3'b010: begin //slti
 							nextState = Exeslti;
 						end
+
 						default: begin
 							nextState = inicio;
 						end
+						
 					endcase
 				end
 
-				7'b0000011: begin //ld
-					case(func3)
-						3'b011: begin
-							nextState = Cem;
-						end
-						default: begin
-							nextState = inicio;
-						end
-					endcase
+				7'b0000011: begin //Loads
+					nextState = Cem;
 				end
 
 				7'b0100011: begin //sd
