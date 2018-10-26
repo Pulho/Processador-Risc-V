@@ -25,7 +25,9 @@ module UnidadeControle(
 	output logic LoadRegA,
 	output logic LoadRegB,
 	output logic LoadAOut,
-	output logic LoadMDR
+	output logic LoadMDR,
+	output logic flagCausa,
+	output logic causa
 );
 
 logic [4:0] inicio = 5'b00000;
@@ -53,6 +55,7 @@ logic [4:0] Exeslti = 5'b10101;
 logic [4:0] Crcjal = 5'b10110;
 logic [4:0] DecodJalr = 5'b10111;
 logic [4:0] Crcjalr = 5'b11000;
+logic [4:0] exc = 5'b11001;
 
 logic [4:0] state; 
 logic [4:0] nextState;
@@ -249,7 +252,7 @@ always_comb begin
 					end
 
 					default: begin
-						nextState = inicio;
+						nextState = exc;
 					end
 				endcase
 			end
@@ -719,7 +722,7 @@ always_comb begin
 			LoadIR = 1'b0;
 			MemToReg = 3'b100;
 			ALUSrcA = 2'b01;
-			ALUSrcB = 2'b11;
+			ALUSrcB = 2'b10;
 			ALUFct = 3'b001;
 			PCWrite = 1'b0;
 			PCWriteCondbeq = 1'b0;
@@ -755,6 +758,12 @@ always_comb begin
 			LoadAOut = 1'b1;
 			LoadMDR = 1'b0;
 			nextState = inicio;
+		end
+
+		exc: begin
+			flagCausa = 1'b1;
+			causa = 1'b0;
+			nextState = Break;
 		end
 
 		Break: begin
