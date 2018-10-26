@@ -7,6 +7,7 @@ module UnidadeControle(
 
 	output logic [4:0] stateout,
 	output logic [1:0] Shift,
+	//output logic Extend,
 	output logic Wrl,
 	output logic WrD,
 	output logic RegWrite,
@@ -58,9 +59,6 @@ logic [4:0] Nop = 5'b11000;//Precisa criar
 //logic [4:0] Evlbu = 5'b11100;//Precisa criar
 //logic [4:0] Evlh = 5'b11101;//Precisa criar
 //logic [4:0] Nop = 5'b11110;//Precisa criar e colocar junto do case do addi
-
-
-
 
 logic [4:0] state; 
 logic [4:0] nextState;
@@ -282,7 +280,7 @@ always_comb begin
 			LoadRegA = 1'b0;
 			LoadRegB = 1'b0;
 			LoadAOut = 1'b1;
-			LoadMDR = 1'b0;;
+			LoadMDR = 1'b0;
 
 			if(OPcode == 7'b0000011 || OPcode == 7'b0100011) begin
 				nextState = Amld;
@@ -345,19 +343,19 @@ always_comb begin
 				nextState = Ev;
 				/*case(func3)
 					3'b011: begin // ld
-						nextState = Evld;
+						nextState = Ev;
 					end
 
 					3'b010: begin // lw
-						nextState = Evlw;
+            			nextState = Extend;
 					end
 
 					3'b100: begin // lbu
-						nextState = Evlbu;
+						nextState = Ev;
 					end
 
 					3'b001: begin // lh
-						nextState = Evlh;
+            			nextState = Extend;
 					end
 
 					default: begin
@@ -370,7 +368,31 @@ always_comb begin
 			end
 		end
 
-		Ev: begin
+    Extend: begin
+    	Shift = 2'b00;
+			Extend = 1'b1;
+			Wrl = 1'b0;
+			WrD = 1'b0;
+			RegWrite = 1'b0;
+			LoadIR = 1'b0;
+			MemToReg = 2'b00;
+			ALUSrcA = 2'b00;
+			ALUSrcB = 2'b00;
+			ALUFct = 3'b000;
+			PCWrite = 1'b0;
+			PCWriteCondbeq = 1'b0;
+			PCWriteCondbne = 1'b0;
+			PCWriteCondbge = 1'b0;
+			PCWriteCondblt = 1'b0;
+			PCSource = 1'b0;
+			LoadRegA = 1'b0;
+			LoadRegB = 1'b0;
+			LoadAOut = 1'b0;
+			LoadMDR = 1'b00;
+			nextState = inicio;
+		end
+    
+    Ev: begin
 			Shift = 2'b00;
 			Wrl = 1'b0;
 			WrD = 1'b0;
