@@ -422,7 +422,7 @@ always_comb begin
 		Cr: begin
 			Shift = 2'b00;
 			Wrl = 1'b0;
-			WrD = 1'b1;
+			WrD = 1'b0;
 			RegWrite = 1'b1;
 			LoadIR = 1'b0;
 			MemToReg = 3'b000;
@@ -765,15 +765,20 @@ always_comb begin
 		end
 
 		exc: begin
-			flagCausa = 1'b1;
-			causa = 1'b0;
+			ALUSrcA = 2'b00;
+			ALUSrcB = 2'b01;
+			ALUFct = 3'b010;
+			PCSource = 1'b0;
+			PCWrite = 1'b1;
 			muxInstr = 1'b1;
 			LoadIR = 1'b1;
 			nextState = exc2;
 		end
 
 		exc2: begin
-			flagCausa = 1'b0;
+			PCWrite = 1'b0;
+			flagCausa = 1'b1;
+			causa = 1'b0;
 			nextState = exc3;
 		end
 
@@ -782,6 +787,7 @@ always_comb begin
 			ALUFct = 3'b000;
 			PCSource = 1'b0;
 			PCWrite = 1'b1;
+			flagCausa = 1'b0;
 			nextState = Break;
 		end
 		
