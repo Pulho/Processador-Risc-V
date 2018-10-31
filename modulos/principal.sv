@@ -10,7 +10,11 @@ module principal(
 	output logic [63:0] fio_ALU_ALUOut,
 	output logic [63:0] fio_ALUOut_MuxALUOut,
 	output logic [63:0] fio_MuxALUOut_PC,
-	output logic [63:0] fio_RegMemData_Mux
+	output logic [63:0] fio_RegMemData_Mux,
+	output logic fio_UC_flagCausa,
+	output logic fio_UC_causa,
+	output logic [31:0] fio_memInst_regInst,
+	output logic saida
 );
 	
 	logic fio_UC_memInst;
@@ -27,6 +31,8 @@ module principal(
 	logic fio_UC_PCWriteCondbge;
 	logic fio_UC_PCWriteCondblt;
 	logic fio_UC_PCWrite;
+	// logic fio_UC_flagCausa;
+	// logic fio_UC_causa;
 	logic fio_zero;
 	logic fio_igual;
 	logic fio_maior;
@@ -52,13 +58,38 @@ module principal(
 	logic [63:0] fio_Extend_shift;
 	logic [63:0] fio_Shift_MuxB;
 	logic [2:0] fio_memToReg_muxWD;
-	logic [31:0] fio_memInst_regInst;
+	// logic [31:0] fio_memInst_regInst;
 	logic [31:0] fio_regInst_UC;
 	logic [4:0] fio_regInst1915_reg1;
 	logic [4:0] fio_regInst2420_reg2;
 	logic [4:0] fio_regInst117_WriteReg;
 	logic LoadPC;
 	logic fio_menor_ExtendS;
+	logic fio_muxInstr;
+	logic [63:0] fio_muxMEM;
+
+	register EPC(
+		.clk(clk),
+		.reset(reset),
+		.regWrite(fio_UC_flagCausa),
+		.DadoIn(fio_PC_memInst),
+		.DadoOut()
+	);
+
+	mux_single mux_Instr(
+		.sel(fio_muxInstr),
+		.e1(fio_PC_memInst),
+		.e2(64'b0000000000000000000000000000000000000000000000000000000011111110),
+		.f(fio_muxMEM)
+	);
+
+	register RegCausa (
+		.clk(clk),
+		.reset(reset),
+		.regWrite(fio_UC_flagCausa),
+		.DadoIn(fio_UC_causa),
+		.DadoOut(saida)
+	);
 
 	register PC(
 		.clk(clk),
@@ -70,7 +101,7 @@ module principal(
 	
 	Memoria32 memInst(
 		.Clk(clk),
-		.raddress(fio_PC_memInst[31:0]),
+		.raddress(fio_muxMEM[31:0]),
 		.waddress(),
 		.Datain(),
 		.Dataout(fio_memInst_regInst),
@@ -115,7 +146,10 @@ module principal(
 		.LoadRegA(fio_UC_LDA),
 		.LoadRegB(fio_UC_LDB),
 		.LoadAOut(fio_UC_ALUOut),
-		.LoadMDR(fio_UC_LoadMDR)
+		.LoadMDR(fio_UC_LoadMDR),
+		.flagCausa(fio_UC_flagCausa),
+		.causa(fio_UC_causa),
+		.muxInstr(fio_muxInstr)
 	);
 	
 	bancoReg reg_bank(

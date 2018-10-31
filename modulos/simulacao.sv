@@ -16,6 +16,9 @@ module simulacao;
     logic [63:0] outAluOut;
     logic [63:0] e2;
     logic [63:0] s_type;
+    logic [31:0] inst;
+    logic regCausa;
+    logic causa;
 
 
     principal test (
@@ -29,7 +32,10 @@ module simulacao;
         .fio_ALU_ALUOut(aluOut),
         .fio_MuxALUOut_PC(pcAlu),
         .fio_ALUOut_MuxALUOut(outAluOut),
-        .fio_RegMemData_Mux(e2)
+        .fio_RegMemData_Mux(e2),
+        .fio_UC_causa(causa),
+        .fio_memInst_regInst(inst),
+        .saida(regCausa)
     ); 
 
     initial begin 
@@ -54,6 +60,6 @@ module simulacao;
     
     initial begin
         clk = 1'b1;
-        $monitor($time,"stateOut - %b | aAlu - %b | bAlu - %b\n\t\t\t\taluOut - %b | outAluOut - %b\n\t\t\t\te2 - %b |  regBank - %b\n\t\t\t\tsType - %b | pcAlu - %b\n\n", Out, aAlu, bAlu, aluOut, outAluOut, e2, regBank, s_type, pcAlu);
+        $monitor($time,"stateOut - %b | regCausa - %b | causa - %b | inst - %b\n", Out, regCausa, causa, inst);
     end
 endmodule: simulacao
