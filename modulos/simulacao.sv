@@ -6,36 +6,48 @@ module simulacao;
 
     logic clk;
     logic rst;
-    logic [4:0] Out;
+    logic [4:0] Estado;
     logic [6:0] cont;
-    logic [63:0] regBank;
+    logic [63:0] WriteDataReg;
     logic [63:0] aAlu;
     logic [63:0] bAlu;
-    logic [63:0] pcAlu;
-    logic [63:0] aluOut;
-    logic [63:0] outAluOut;
-    logic [63:0] e2;
-    logic [63:0] s_type;
+    logic [63:0] PC;
+    logic [63:0] Alu;
+    logic [63:0] AluOut;
+    logic [63:0] MDR;
+    logic [63:0] WriteDataMem;
     logic [31:0] inst;
-    logic regCausa;
+    logic [63:0] EPC;
     logic causa;
+    logic [63:0] Adress;
+    logic Wr;
+    logic RegWrite;
+    logic IRWrite;
+    logic [63:0] MemData;
+    logic [4:0] WriteRegister;
 
 
     principal test (
         .clk(clk), 
         .reset(rst),       
-        .stateOut(Out),
-        .fio_Stype_memDados(s_type),
-        .fio_muxWD_regBank(regBank),
+        .stateOut(Estado),
+        .fio_Stype_memDados(WriteDataMem),
+        .fio_muxWD_regBank(WriteDataReg),
         .fio_MuxA_ALU(aAlu),
         .fio_MuxB_ALU(bAlu),
-        .fio_ALU_ALUOut(aluOut),
-        .fio_MuxALUOut_PC(pcAlu),
-        .fio_ALUOut_MuxALUOut(outAluOut),
-        .fio_RegMemData_Mux(e2),
+        .fio_ALU_ALUOut(Alu),
+        .fio_MuxALUOut_PC(PC),
+        .fio_ALUOut_MuxALUOut(AluOut),
+        .fio_RegMemData_Mux(MDR),
         .fio_UC_causa(causa),
         .fio_memInst_regInst(inst),
-        .saida(regCausa)
+        .saidaEPC(EPC),
+        .adress(Adress),
+        .fio_UC_WrD(Wr),
+        .fio_UC_RegBank(RegWrite),
+        .fio_UC_RegInst(IRWrite),
+        .fio_MemData_RegMemData(MemData),
+        .fio_regInst117_WriteReg(WriteRegister)
     ); 
 
     initial begin 
@@ -60,6 +72,6 @@ module simulacao;
     
     initial begin
         clk = 1'b1;
-        $monitor($time,"stateOut - %b | regCausa - %b | causa - %b | inst - %b\n", Out, regCausa, causa, inst);
+        $monitor($time,"stateOut - %b | regCausa - %b | causa - %b | inst - %b\n", Estado, EPC, causa, inst);
     end
 endmodule: simulacao

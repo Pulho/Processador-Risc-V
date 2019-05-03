@@ -31,34 +31,34 @@ module UnidadeControle(
 	output logic muxInstr
 );
 
-logic [4:0] inicio = 5'b00000;
-logic [4:0] BInst = 5'b00001;
-logic [4:0] IDecod = 5'b00010; 
-logic [4:0] Cem = 5'b00011;
-logic [4:0] Amld = 5'b00100;
-logic [4:0] Ev = 5'b00101;
-logic [4:0] Amsd = 5'b00110;
-logic [4:0] Exeadd = 5'b00111;
-logic [4:0] Exesub = 5'b01000;
-logic [4:0] Cr = 5'b01001;
-logic [4:0] Crcbeq = 5'b01010;
-logic [4:0] Crcbne = 5'b01011;
-logic [4:0] Lui = 5'b01100;
-logic [4:0] Exeand = 5'b01101;
-logic [4:0] Exeslt = 5'b01110;
-logic [4:0] Crcbge = 5'b01111;
-logic [4:0] Crcblt = 5'b10000;
-logic [4:0] Srli = 5'b10001;
-logic [4:0] Srai = 5'b10010;
-logic [4:0] Slli = 5'b10011;
-logic [4:0] Break = 5'b10100;
-logic [4:0] Exeslti = 5'b10101;
-logic [4:0] Crcjal = 5'b10110;
-logic [4:0] DecodJalr = 5'b10111;
-logic [4:0] Crcjalr = 5'b11000;
-logic [4:0] exc = 5'b11001;
-logic [4:0] exc2 = 5'b11010;
-logic [4:0] exc3 = 5'b11011;
+logic [4:0] inicio = 5'b00000; //0
+logic [4:0] BInst = 5'b00001; //1
+logic [4:0] IDecod = 5'b00010; //2
+logic [4:0] Cem = 5'b00011; //3
+logic [4:0] Amld = 5'b00100; //4
+logic [4:0] Ev = 5'b00101; //5
+logic [4:0] Amsd = 5'b00110; //6
+logic [4:0] Exeadd = 5'b00111; //7
+logic [4:0] Exesub = 5'b01000; //8
+logic [4:0] Cr = 5'b01001; //9
+logic [4:0] Crcbeq = 5'b01010; //10
+logic [4:0] Crcbne = 5'b01011; //11
+logic [4:0] Lui = 5'b01100; //12
+logic [4:0] Exeand = 5'b01101; //13
+logic [4:0] Exeslt = 5'b01110; //14
+logic [4:0] Crcbge = 5'b01111; //15
+logic [4:0] Crcblt = 5'b10000; //16
+logic [4:0] Srli = 5'b10001; //17
+logic [4:0] Srai = 5'b10010; //18
+logic [4:0] Slli = 5'b10011; //19
+logic [4:0] Break = 5'b10100; //20
+logic [4:0] Exeslti = 5'b10101; //21
+logic [4:0] Crcjal = 5'b10110; //22
+logic [4:0] DecodJalr = 5'b10111; //23
+logic [4:0] Crcjalr = 5'b11000; //24
+logic [4:0] exc = 5'b11001; //25
+logic [4:0] exc2 = 5'b11010; //26
+logic [4:0] exc3 = 5'b11011; //27
 
 logic [4:0] state; 
 logic [4:0] nextState;
@@ -703,8 +703,8 @@ always_comb begin
 			LoadIR = 1'b0;
 			MemToReg = 3'b100;
 			ALUSrcA = 2'b00;
-			ALUSrcB = 2'b00;
-			ALUFct = 3'b000;
+			ALUSrcB = 2'b11;
+			ALUFct = 3'b001;
 			PCWrite = 1'b1;
 			PCWriteCondbeq = 1'b0;
 			PCWriteCondbne = 1'b0;
