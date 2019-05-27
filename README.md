@@ -1,11 +1,6 @@
 # Processador Risk V
 
-## Sumário:
-* [Descrição dos módulos](./#-[:link:](https://github.com/Pulho/Processador-Risc-V/blob/master/etc/Circuito.png)-Descrição-dos-módulos)
-* [Descrição das Operações](./#-Descrição-das-operações)
-* [Descrição dos estados de Controle](./#-[:link:](https://github.com/Pulho/Processador-Risc-V/blob/master/etc/maquinaDeEstados.png)-Descrição-dos-Estados-de-Controle)
-
-## [:link:](https://github.com/Pulho/Processador-Risc-V/blob/master/etc/Circuito.png) Descrição dos módulos
+# [:link:](https://github.com/Pulho/Processador-Risc-V/blob/master/etc/Circuito.png) Descrição dos módulos
 ### Módulo: UnidadeControle
 
 **Entradas:**
@@ -102,7 +97,7 @@ Faz seleção do store por meio do func3, redirecionando para a instrução corr
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-## Descrição das operações
+# Descrição das operações
 
 ### TIPO R
 
@@ -198,7 +193,7 @@ Após a identificação da instrução na etapa de decodificação, o registrado
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-## [:link:](https://github.com/Pulho/Processador-Risc-V/blob/master/etc/maquinaDeEstados.png) Descrição dos Estados de Controle
+# [:link:](https://github.com/Pulho/Processador-Risc-V/blob/master/etc/maquinaDeEstados.png) Descrição dos Estados de Controle
 
 **Estado: inicio**
 Nesse estado são zerados todas as variáveis e flags de controle da Unidade de Controle e define o próximo estado para o BInst (Busca de instrução )*
