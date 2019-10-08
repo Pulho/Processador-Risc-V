@@ -1,0 +1,11 @@
+Procedimentos com erros confirmados:
+-Jal
+-Jalr
+-Srai
+-Exc2
+-Exc3
+-Divisão por 0
+
+
+Adicionar futuramente:
+-Multiplicacao 64x64 (mul e mulh)
