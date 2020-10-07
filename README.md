@@ -283,7 +283,7 @@ Nesse estado é formado um loop, ou seja, define-se Break como seu próximo esta
 ## Desenvolvedores
 * [João Victor de Lima Peixoto](https://github.com/jvlp) 
 
-* [Manoel Alves Xavier Neto](https://github.com/maxn13)
+* [Manoel Alves Xavier Neto](https://github.com/oxemaxn)
 
 * [Paulo Victor de Oliveira Andrade](https://github.com/Pulho)
 
